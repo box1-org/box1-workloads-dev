@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-service
+  namespace: test-service-dev
+spec:
+  selector:
+    app.kubernetes.io/name: test-service
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

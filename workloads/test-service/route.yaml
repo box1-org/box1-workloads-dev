@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: test-service
+  namespace: test-service-dev
+spec:
+  host: test-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: test-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
