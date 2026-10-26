@@ -21,4 +21,4 @@ configMapGenerator:
 images:
   - name: test-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/test-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:c0efd0b018e4918388f3b98394399d317cbe6c13031031da47112eef8ebdfaac
