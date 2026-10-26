@@ -5,7 +5,7 @@ metadata:
   namespace: quarkus-golden-path-smoke
   annotations:
     box1.org/source-revision: 843fae1f7fbdece6eb6cacc1c2d6a70171d37870
-    box1.org/build-pipelinerun: box1-ci/quarkus-golden-path-smoke-release-k69b9
+    box1.org/build-pipelinerun: box1-ci/workloads-split-golden-retry-tskf5
 spec:
   replicas: 1
   revisionHistoryLimit: 3
