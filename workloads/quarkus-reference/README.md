@@ -33,7 +33,7 @@ policy. Never use a Tekton task to apply these resources to the cluster.
 3. Argo CD reconciles the digest. A read-only Tekton observer checks the actual
    running digest and source revision, then smoke-tests the HTTPS Route.
 
-See [the automation design](../../platform/pipelines/AUTOMATION.md) for credentials,
+See [the automation design](https://github.com/box1-org/box1-gitops/blob/main/platform/pipelines/AUTOMATION.md) for credentials,
 required checks, manual-approval policy, and failure behavior.
 
 ```sh
