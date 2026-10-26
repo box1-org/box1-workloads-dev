@@ -5,9 +5,9 @@ metadata:
   namespace: test-service-dev
   annotations:
     box1.org/source-revision: 5d2a1e4f17a3c036345ced0b290bb1a664d72759
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-test-service-5d2a1e4f
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
