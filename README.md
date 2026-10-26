@@ -20,7 +20,8 @@ digest and build provenance here after required checks succeed.
 
 ## Validation
 
-Run `kubectl kustomize workloads/<service>` locally. Pull requests run
+Run `kubectl kustomize workloads/<service>` locally before opening a pull
+request. Keep runtime image references pinned to immutable digests. Pull requests run
 `box1-phase1-smoke-` and `box1-gitops-validate-` checks through Pipelines as Code.
 Promotion verifies successful checks from the `box1-pipelines` GitHub App on the
 exact proposed commit before automatically merging development changes.
