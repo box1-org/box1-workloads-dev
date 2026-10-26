@@ -16,4 +16,4 @@ configMapGenerator:
 images:
   - name: quarkus-golden-path-smoke
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/quarkus-golden-path-smoke
-    digest: sha256:ddcd0337fecaa8cb278b16ece4f744833f1558b3e41800e3d7e9c4b3ed59a365
+    digest: sha256:37d3facbd1fdc9cd2d52cf419c016ff5fa66e82eaef2d0edff6badafb7730afc
