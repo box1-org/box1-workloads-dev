@@ -4,8 +4,8 @@ metadata:
   name: shipping-service
   namespace: shipping-service-dev
   annotations:
-    box1.org/source-revision: 86c77b6b87a7eea46d2638f305ecf5748ca2c9ea
-    box1.org/build-pipelinerun: box1-ci/onb-shipping-service-86c77b6b
+    box1.org/source-revision: e54774817b834105ab28fb7c76dd8859f81f9349
+    box1.org/build-pipelinerun: box1-ci/shipping-service-release-2xtrq
 spec:
   replicas: 1
   revisionHistoryLimit: 3
