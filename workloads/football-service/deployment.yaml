@@ -4,8 +4,8 @@ metadata:
   name: football-service
   namespace: football-service-dev
   annotations:
-    box1.org/source-revision: 1a5ed69fe3662268da9c1f76ef4dad395d0dcc0d
-    box1.org/build-pipelinerun: box1-ci/onb-football-service-1a5ed69f
+    box1.org/source-revision: 748dc3b8d86a044f7ae9848ee053b905ca8fcdad
+    box1.org/build-pipelinerun: box1-ci/football-service-release-8vd77
 spec:
   replicas: 1
   revisionHistoryLimit: 3
