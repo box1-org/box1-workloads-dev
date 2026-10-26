@@ -4,8 +4,8 @@ metadata:
   name: orders-service
   namespace: orders-service-dev
   annotations:
-    box1.org/source-revision: 918732a78bc4cfadd24b0423aa23f87ba57c1ec3
-    box1.org/build-pipelinerun: box1-ci/orders-service-release-lfjbr
+    box1.org/source-revision: 19534389f4cba74ec505566934950479052ed421
+    box1.org/build-pipelinerun: box1-ci/orders-service-release-ffwd8
 spec:
   replicas: 1
   revisionHistoryLimit: 3
