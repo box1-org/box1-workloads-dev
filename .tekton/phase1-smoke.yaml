@@ -1,0 +1,43 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: box1-phase1-smoke-
+  annotations:
+    pipelinesascode.tekton.dev/on-event: "[pull_request, push]"
+    pipelinesascode.tekton.dev/on-target-branch: "[main]"
+    pipelinesascode.tekton.dev/max-keep-runs: "5"
+spec:
+  taskRunTemplate:
+    serviceAccountName: ci-test
+  timeouts:
+    pipeline: 10m
+  params:
+    - name: revision
+      value: "{{revision}}"
+  pipelineSpec:
+    params:
+      - name: revision
+        type: string
+    tasks:
+      - name: smoke
+        params:
+          - name: revision
+            value: $(params.revision)
+        taskSpec:
+          params:
+            - name: revision
+              type: string
+          steps:
+            - name: verify
+              image: registry.access.redhat.com/ubi9/ubi-minimal@sha256:34880b64c07f28f64d95737f82f891516de9a3b43583f39970f7bf8e4cfa48b7
+              env:
+                - name: HOME
+                  value: /tekton/home
+                - name: REVISION
+                  value: $(params.revision)
+              script: |
+                #!/bin/sh
+                set -eu
+                test -n "$REVISION"
+                printf 'Tekton smoke completed for revision %s\n' "$REVISION"
+                printf 'No application deployment is performed by this pipeline.\n'
