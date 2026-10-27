@@ -21,4 +21,4 @@ configMapGenerator:
 images:
   - name: smallville-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/smallville-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:374a4a4aee72218a44cdd8ea9dc36f442202a888647cc2ad4a8fad0d7a3bbca3

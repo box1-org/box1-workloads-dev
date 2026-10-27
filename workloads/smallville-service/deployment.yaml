@@ -5,9 +5,9 @@ metadata:
   namespace: smallville-service-dev
   annotations:
     box1.org/source-revision: 6b1f78f3942a7812db7d85ee49d26cbbbf800f56
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-smallville-service-6b1f78f3
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
