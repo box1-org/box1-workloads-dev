@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: atrioc-service
+  namespace: atrioc-service-dev
+spec:
+  host: atrioc-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: atrioc-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

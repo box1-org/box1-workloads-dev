@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "atrioc-service"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: atrioc-service
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/atrioc-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "atrioc-service-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
