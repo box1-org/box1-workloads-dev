@@ -21,4 +21,4 @@ configMapGenerator:
 images:
   - name: world-series-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/world-series-service
-    digest: sha256:c84c46168e95dbaeb1f3c628f5814b6fbf9a9ef261951d00fbd10a683a707ba6
+    digest: sha256:e9417431a872330480d7311c2c4c64e0a920854d5e9993977b26c1b011028730
