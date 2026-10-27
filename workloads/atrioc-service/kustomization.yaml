@@ -21,4 +21,4 @@ configMapGenerator:
 images:
   - name: atrioc-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/atrioc-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:593196ae10384e2037f2c5ae3690a6d038fb2f87367743e390f7319eb0795a4f

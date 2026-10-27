@@ -5,9 +5,9 @@ metadata:
   namespace: atrioc-service-dev
   annotations:
     box1.org/source-revision: 707303cfff44297a3974a8b8c350bbd7bb3069ec
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-atrioc-service-707303cf
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
