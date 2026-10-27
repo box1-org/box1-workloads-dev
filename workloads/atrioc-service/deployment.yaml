@@ -4,8 +4,8 @@ metadata:
   name: atrioc-service
   namespace: atrioc-service-dev
   annotations:
-    box1.org/source-revision: 707303cfff44297a3974a8b8c350bbd7bb3069ec
-    box1.org/build-pipelinerun: box1-ci/onb-atrioc-service-707303cf
+    box1.org/source-revision: 7d34668ac77dc1af8b734e267dd7ee27f9c3465f
+    box1.org/build-pipelinerun: box1-ci/atrioc-service-release-zxc6d
 spec:
   replicas: 1
   revisionHistoryLimit: 3
