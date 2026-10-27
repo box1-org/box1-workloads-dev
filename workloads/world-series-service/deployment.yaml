@@ -4,8 +4,8 @@ metadata:
   name: world-series-service
   namespace: world-series-service-dev
   annotations:
-    box1.org/source-revision: 912bd51bc943be2946dc316dd3b93941ee3c01d7
-    box1.org/build-pipelinerun: box1-ci/onb-world-series-service-912bd51b
+    box1.org/source-revision: e907aa5f42469799cb2424963e1622d27eb6009c
+    box1.org/build-pipelinerun: box1-ci/world-series-service-release-h5mbx
 spec:
   replicas: 1
   revisionHistoryLimit: 3
