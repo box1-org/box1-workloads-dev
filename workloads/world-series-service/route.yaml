@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: world-series-service
+  namespace: world-series-service-dev
+spec:
+  host: world-series-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: world-series-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
