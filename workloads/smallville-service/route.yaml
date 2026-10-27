@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: smallville-service
+  namespace: smallville-service-dev
+spec:
+  host: smallville-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: smallville-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
