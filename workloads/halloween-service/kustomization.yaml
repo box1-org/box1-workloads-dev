@@ -21,4 +21,4 @@ configMapGenerator:
 images:
   - name: halloween-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/halloween-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:adccbf44448a199df2ac2a5aa0bda27494102b866464d710d082a0aed1f0e2bc
