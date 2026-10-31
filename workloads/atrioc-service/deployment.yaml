@@ -5,7 +5,7 @@ metadata:
   namespace: atrioc-service-dev
   annotations:
     box1.org/source-revision: 7d34668ac77dc1af8b734e267dd7ee27f9c3465f
-    box1.org/build-pipelinerun: box1-ci/atrioc-service-release-zxc6d
+    box1.org/build-pipelinerun: box1-ci/atrioc-observe-both-mvwzwggp
 spec:
   replicas: 1
   revisionHistoryLimit: 3
