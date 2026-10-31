@@ -5,9 +5,9 @@ metadata:
   namespace: halloween-service-dev
   annotations:
     box1.org/source-revision: da5c6e61f4e91bfe81a8dba975eb103d6a216b23
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-halloween-service-da5c6e61
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
