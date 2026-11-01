@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+labels:
+  - pairs:
+      backstage.io/kubernetes-id: hammer3-service
+    includeSelectors: false
+    includeTemplates: true
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - deployment.yaml
+  - service.yaml
+  - route.yaml
+  - onboarding.yaml
+configMapGenerator:
+  - name: hammer3-service-config
+    namespace: hammer3-service-dev
+    literals:
+      - GREETING_PREFIX=Hello from box1
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=70.0 -Djava.io.tmpdir=/tmp
+
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://hammer3-service-postgres:5432/hammer3_service
+      - QUARKUS_DATASOURCE_USERNAME=hammer3_service
+
+
+      - KAFKA_BOOTSTRAP_SERVERS=box1-kafka-kafka-bootstrap.box1-kafka.svc:9092
+
+images:
+  - name: hammer3-service
+    newName: image-registry.openshift-image-registry.svc:5000/box1-ci/hammer3-service
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000

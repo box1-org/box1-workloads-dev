@@ -1,0 +1,190 @@
+---
+apiVersion: pipelinesascode.tekton.dev/v1alpha1
+kind: Repository
+metadata:
+  name: "hammer3-service"
+  namespace: box1-ci
+spec:
+  url: https://github.com/box1-org/hammer3-service
+  concurrency_limit: 1
+  settings:
+    pipelinerun_provenance: default_branch
+    github_app_token_scope_repos:
+    - box1-org/box1-workloads-dev
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "hammer3-service-image-puller"
+  namespace: box1-ci
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-puller
+subjects:
+- kind: ServiceAccount
+  name: "hammer3-service"
+  namespace: "hammer3-service-dev"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "hammer3-service-release-observer"
+  namespace: "hammer3-service-dev"
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  resourceNames:
+  - "hammer3-service"
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "hammer3-service-release-observer"
+  namespace: "hammer3-service-dev"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "hammer3-service-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: hammer3-service-postgres
+  namespace: hammer3-service-dev
+  annotations:
+    box1.org/secret-bootstrap: replace-before-sync
+type: Opaque
+stringData:
+  POSTGRESQL_DATABASE: hammer3_service
+  POSTGRESQL_USER: hammer3_service
+  POSTGRESQL_PASSWORD: replace-before-sync
+  QUARKUS_DATASOURCE_PASSWORD: replace-before-sync
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hammer3-service-postgres-data
+  namespace: hammer3-service-dev
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hammer3-service-postgres
+  namespace: hammer3-service-dev
+  labels:
+    app.kubernetes.io/name: hammer3-service-postgres
+    app.kubernetes.io/part-of: hammer3-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hammer3-service-postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hammer3-service-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: registry.redhat.io/rhel9/postgresql-15@sha256:95e94264e14133d80ddbc9980eeebf4806d6668a61cbc1917e57efa1941b516b
+          ports:
+            - name: postgres
+              containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: hammer3-service-postgres
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/pgsql/data
+          readinessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "pg_isready -U \"$POSTGRESQL_USER\" -d \"$POSTGRESQL_DATABASE\""]
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: hammer3-service-postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hammer3-service-postgres
+  namespace: hammer3-service-dev
+spec:
+  selector:
+    app.kubernetes.io/name: hammer3-service-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+
+
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: hammer3-service-events
+  namespace: hammer3-service-dev
+  labels:
+    strimzi.io/cluster: box1-kafka
+    app.kubernetes.io/part-of: hammer3-service
+spec:
+  partitions: 3
+  replicas: 1
+  config:
+    retention.ms: 604800000
+    cleanup.policy: delete
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "hammer3-service-release-observer"
+  namespace: openshift-gitops
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - applications
+  resourceNames:
+  - "hammer3-service"
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "hammer3-service-release-observer"
+  namespace: openshift-gitops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "hammer3-service-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
