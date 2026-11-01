@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hammer-service
+  namespace: hammer-service-dev
+spec:
+  host: hammer-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: hammer-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
