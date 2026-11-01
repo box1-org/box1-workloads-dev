@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "al-service"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: al-service
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/al-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "al-service-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
