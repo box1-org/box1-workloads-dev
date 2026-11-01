@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: al-service
+  namespace: al-service-dev
+spec:
+  host: al-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: al-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
