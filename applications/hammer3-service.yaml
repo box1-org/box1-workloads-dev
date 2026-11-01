@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "hammer3-service"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: hammer3-service
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/hammer3-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "hammer3-service-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
