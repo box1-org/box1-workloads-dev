@@ -1,0 +1,94 @@
+---
+apiVersion: pipelinesascode.tekton.dev/v1alpha1
+kind: Repository
+metadata:
+  name: "gold-service"
+  namespace: box1-ci
+spec:
+  url: https://github.com/box1-org/gold-service
+  concurrency_limit: 1
+  settings:
+    pipelinerun_provenance: default_branch
+    github_app_token_scope_repos:
+    - box1-org/box1-workloads-dev
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "gold-service-image-puller"
+  namespace: box1-ci
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-puller
+subjects:
+- kind: ServiceAccount
+  name: "gold-service"
+  namespace: "gold-service-dev"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "gold-service-release-observer"
+  namespace: "gold-service-dev"
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  resourceNames:
+  - "gold-service"
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "gold-service-release-observer"
+  namespace: "gold-service-dev"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "gold-service-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "gold-service-release-observer"
+  namespace: openshift-gitops
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - applications
+  resourceNames:
+  - "gold-service"
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "gold-service-release-observer"
+  namespace: openshift-gitops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "gold-service-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
