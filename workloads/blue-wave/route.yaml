@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: blue-wave
+  namespace: blue-wave-dev
+spec:
+  host: blue-wave-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: blue-wave
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
