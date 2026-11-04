@@ -23,4 +23,4 @@ configMapGenerator:
 images:
   - name: bypass-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/bypass-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:d2c3319c23a5ab847efe1a6c0022aad92b79d0a00154630011ce503480ae0c0f

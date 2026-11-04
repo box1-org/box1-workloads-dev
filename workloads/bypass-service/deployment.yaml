@@ -5,9 +5,9 @@ metadata:
   namespace: bypass-service-dev
   annotations:
     box1.org/source-revision: 5d985208fc56527edf9d2a38c7179a911771a8a8
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-bypass-service-5d985208
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
