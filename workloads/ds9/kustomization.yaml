@@ -23,4 +23,4 @@ configMapGenerator:
 images:
   - name: ds9
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/ds9
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:c214e9b2c338715c838be916ae78d67ed829ae4fdf050245ea0d93583173062d
