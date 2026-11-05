@@ -31,4 +31,4 @@ configMapGenerator:
 images:
   - name: inventory-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/inventory-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:4a1ae81027945f2a6b7c71e6fe38fa38fabb53ee64cb4bfd1b7b2315699bc836
