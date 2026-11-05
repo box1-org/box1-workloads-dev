@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ds9
+  namespace: ds9-dev
+spec:
+  host: ds9-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: ds9
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
