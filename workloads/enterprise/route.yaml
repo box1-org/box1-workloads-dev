@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: enterprise
+  namespace: enterprise-dev
+spec:
+  host: enterprise-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: enterprise
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
