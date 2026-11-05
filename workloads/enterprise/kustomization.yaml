@@ -28,4 +28,4 @@ configMapGenerator:
 images:
   - name: enterprise
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/enterprise
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:ad4b61a05db695e0723af17ed0b9188d3e3b9dc7b2af49b4c816fe69eb86dbf2
