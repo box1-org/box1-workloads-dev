@@ -28,4 +28,4 @@ configMapGenerator:
 images:
   - name: post-show
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/post-show
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:d896e736b0d73e3fe3d52de4b6074349ce5e61ffdfc875cd90f710eb451b649b

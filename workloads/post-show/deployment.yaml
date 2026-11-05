@@ -5,9 +5,9 @@ metadata:
   namespace: post-show-dev
   annotations:
     box1.org/source-revision: eb2130fedfd001799659431444a5f9c1c26b49eb
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-post-show-eb2130fe
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
