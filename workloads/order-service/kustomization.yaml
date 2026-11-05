@@ -30,4 +30,4 @@ configMapGenerator:
 images:
   - name: order-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/order-service
-    digest: sha256:513c366dad2163014e3c8f1533976bf11dbf63cb42c81fd7ff789fcc1258b65d
+    digest: sha256:c90bae8aeb73537dda149be3713744c579fb06d6837e1e21d8d50c3a5ef605c8
