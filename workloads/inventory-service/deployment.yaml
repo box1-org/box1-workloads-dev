@@ -38,6 +38,11 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          env:
+            # Order events older than this have no effect. A plain env, not a generator literal,
+            # so changing it cannot orphan a hashed ConfigMap. See the service runbook.
+            - name: INVENTORY_ORDER_EVENTS_FLOOR
+              value: "2026-11-05T17:00:00Z"
           envFrom:
             - configMapRef:
                 name: inventory-service-config
