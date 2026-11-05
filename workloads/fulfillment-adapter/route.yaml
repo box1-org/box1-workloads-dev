@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: fulfillment-adapter
+  namespace: fulfillment-adapter-dev
+spec:
+  host: fulfillment-adapter-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: fulfillment-adapter
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
