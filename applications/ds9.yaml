@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "ds9"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: ds9
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/ds9
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "ds9-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
