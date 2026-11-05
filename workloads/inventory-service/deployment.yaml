@@ -5,9 +5,9 @@ metadata:
   namespace: inventory-service-dev
   annotations:
     box1.org/source-revision: 5fed34f1172c414475e13ed8d8dedd4de844054a
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-inventory-service-5fed34f1
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
