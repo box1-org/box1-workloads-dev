@@ -14,16 +14,18 @@ resources:
   - onboarding.yaml
 
   - postgres.yaml
+  - networkpolicy.yaml
 
 configMapGenerator:
   - name: order-service-config
     namespace: order-service-dev
     literals:
       - GREETING_PREFIX=Hello from box1
-      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=70.0 -Djava.io.tmpdir=/tmp
+      - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=50.0 -Djava.io.tmpdir=/tmp
 
       - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://order-service-postgres:5432/order_service
       - QUARKUS_DATASOURCE_USERNAME=order_service
+      - KAFKA_BOOTSTRAP_SERVERS=box1-kafka-kafka-bootstrap.box1-kafka.svc:9092
 
 images:
   - name: order-service
