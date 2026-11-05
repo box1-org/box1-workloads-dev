@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "trash-service"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: trash-service
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/trash-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "trash-service-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
