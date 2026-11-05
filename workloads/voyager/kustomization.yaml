@@ -28,4 +28,4 @@ configMapGenerator:
 images:
   - name: voyager
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/voyager
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:69152de82bb2952782e793c0eeb1a126fcb8363d5e9c08771dd5a26d9a3c69b5

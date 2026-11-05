@@ -5,9 +5,9 @@ metadata:
   namespace: voyager-dev
   annotations:
     box1.org/source-revision: 32b4611faf0beeca3f054d32324866bad167dddf
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-voyager-32b4611f
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
