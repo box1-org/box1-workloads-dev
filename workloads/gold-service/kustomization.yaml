@@ -23,4 +23,4 @@ configMapGenerator:
 images:
   - name: gold-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/gold-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:b48f1ccf503061f9506bba36f2ebfe56b5ca1eca944022ea7af4264ba8b4b0fc
