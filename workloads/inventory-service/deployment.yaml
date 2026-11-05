@@ -43,6 +43,9 @@ spec:
             # so changing it cannot orphan a hashed ConfigMap. See the service runbook.
             - name: INVENTORY_ORDER_EVENTS_FLOOR
               value: "2026-11-05T17:00:00Z"
+            # Anonymous reads of stock and reservations; no customer data (box1-docs#12 D-011).
+            - name: INVENTORY_READ_POLICY
+              value: permit
             # A heap OOM could otherwise leave a live pod with a dead consumer.
             - name: JDK_JAVA_OPTIONS
               value: "-XX:+ExitOnOutOfMemoryError"
