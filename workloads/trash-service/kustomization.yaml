@@ -28,4 +28,4 @@ configMapGenerator:
 images:
   - name: trash-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/trash-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:b5fb306d2282a652828f41fbf21e21394226ec984fe3b893ffab4b4488b2be72

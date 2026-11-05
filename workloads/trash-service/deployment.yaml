@@ -5,9 +5,9 @@ metadata:
   namespace: trash-service-dev
   annotations:
     box1.org/source-revision: 08595deb0c32c881674f6d4e644c4fa97609f8da
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-trash-service-08595deb
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
