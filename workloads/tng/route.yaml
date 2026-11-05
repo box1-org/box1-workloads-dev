@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: tng
+  namespace: tng-dev
+spec:
+  host: tng-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: tng
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
