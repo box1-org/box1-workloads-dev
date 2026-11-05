@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tng
+  namespace: tng-dev
+spec:
+  selector:
+    app.kubernetes.io/name: tng
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
