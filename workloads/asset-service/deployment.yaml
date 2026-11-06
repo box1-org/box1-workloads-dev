@@ -43,6 +43,10 @@ spec:
                 name: asset-service-config
           # Settings added after onboarding live here, not in the hashed ConfigMap (box1-docs#42 lesson).
           env:
+            # Clients besides asset-service whose tokens may read, with telemetry-reader only (box1-docs#80, interim
+            # until box1-docs#79). Empty refuses every other client again.
+            - name: ASSET_READ_CLIENTS
+              value: operations-console
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:

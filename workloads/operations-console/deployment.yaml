@@ -70,6 +70,12 @@ spec:
               value: http://scenario-controller.scenario-controller-dev.svc:8080
             - name: CONSOLE_SCENARIO_FORWARD_TOKEN
               value: "true"
+            # Sites shows active asset alerts, read with the signed-in person's token, which goes to asset-service and no
+            # other upstream (box1-docs#80, interim until box1-docs#79). Needs the console client's asset-service
+            # audience and telemetry-reader mapping (box1-gitops) and operations-console in asset-service's
+            # ASSET_READ_CLIENTS. Set "false" to go back to the telemetry-console link only.
+            - name: CONSOLE_ASSET_FORWARD_TOKEN
+              value: "true"
 
           resources:
             requests:
