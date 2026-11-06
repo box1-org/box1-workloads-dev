@@ -4,8 +4,8 @@ metadata:
   name: inventory-service
   namespace: inventory-service-dev
   annotations:
-    box1.org/source-revision: 6b722a378ee20be0154780198047c66236671e4d
-    box1.org/build-pipelinerun: box1-ci/inventory-service-release-vgkx9
+    box1.org/source-revision: 094772ad9945f906fda441c8687e223018c3c7d4
+    box1.org/build-pipelinerun: box1-ci/inventory-service-release-66zjv
 spec:
   replicas: 1
   revisionHistoryLimit: 3
