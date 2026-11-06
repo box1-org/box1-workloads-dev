@@ -5,9 +5,9 @@ metadata:
   namespace: qs-regression-check-dev
   annotations:
     box1.org/source-revision: 528a4ad77913d504457b0f082fff4c830bf13b57
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-qs-regression-check-528a4ad7
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:

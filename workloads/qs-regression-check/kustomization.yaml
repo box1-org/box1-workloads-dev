@@ -24,4 +24,4 @@ configMapGenerator:
 images:
   - name: qs-regression-check
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/qs-regression-check
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:146f060f1aa61b9f62ec98d147f731248b18b2fb1dff9f9be6519518b5e7cf51
