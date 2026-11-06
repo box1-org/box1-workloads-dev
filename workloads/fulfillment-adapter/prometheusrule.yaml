@@ -1,0 +1,66 @@
+# ERP and adapter alerts (box1-docs#22). Evaluated by user-workload monitoring
+# in this namespace. Thresholds are lab starting points: measure the alert
+# latency with a MANUAL-mode or delayed ERP and revise.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: fulfillment-adapter-erp
+  namespace: fulfillment-adapter-dev
+spec:
+  groups:
+    - name: box1-erp
+      interval: 15s
+      rules:
+      - alert: Box1ErpAcknowledgementDelayed
+        expr: max(fulfillment_oldest_unacknowledged_seconds) > 30
+        for: 30s
+        labels:
+          severity: warning
+          service: fulfillment-adapter
+        annotations:
+          summary: "ERP has not acknowledged a fulfillment request for over 30 s"
+          description: "Oldest accepted, unacknowledged request is {{ $value | humanizeDuration }} old. A healthy ERP in AUTO mode acknowledges within seconds. Check the ERP appliance and the adapter's SFTP uploads."
+      - alert: Box1ErpAwaitingOperator
+        expr: max(fulfillment_awaiting_operator) > 0
+        for: 2m
+        labels:
+          severity: warning
+          service: fulfillment-adapter
+        annotations:
+          summary: "Fulfillment requests are waiting for an ERP operator"
+          description: "{{ $value }} acknowledged request(s) are PENDING or HELD in the ERP (MANUAL mode or held). Orders will not ship until an operator acts."
+      - alert: Box1FulfillmentNeedsAttention
+        expr: max(fulfillment_needs_attention) > 0
+        for: 1m
+        labels:
+          severity: warning
+          service: fulfillment-adapter
+        annotations:
+          summary: "Fulfillment requests stopped automatic processing"
+          description: "{{ $value }} request(s) need operator attention in the adapter."
+      - alert: Box1FulfillmentFilesQuarantined
+        expr: max(delta(fulfillment_quarantined_files[10m])) > 0
+        labels:
+          severity: warning
+          service: fulfillment-adapter
+        annotations:
+          summary: "ERP files were quarantined in the last 10 minutes"
+          description: "The adapter quarantined {{ $value }} outbound file(s). Inspect the quarantine directory."
+      - alert: Box1FulfillmentMetricsStale
+        expr: max(fulfillment_metrics_refresh_age_seconds) > 120
+        for: 2m
+        labels:
+          severity: warning
+          service: fulfillment-adapter
+        annotations:
+          summary: "Fulfillment adapter gauges are stale"
+          description: "The adapter has not refreshed its gauges for {{ $value | humanizeDuration }}; the ERP alerts above may be blind."
+      - alert: Box1ServiceDown
+        expr: absent(up{job="fulfillment-adapter"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: fulfillment-adapter
+        annotations:
+          summary: "fulfillment-adapter is not being scraped successfully"
+          description: "No successful scrape of fulfillment-adapter in fulfillment-adapter-dev for 2 minutes. Check the pod and /q/metrics."

@@ -1,0 +1,15 @@
+# Scraped by OpenShift user-workload monitoring (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: inventory-service
+  namespace: inventory-service-dev
+spec:
+  selector:
+    matchLabels:
+      backstage.io/kubernetes-id: inventory-service
+  endpoints:
+    - port: http
+      path: /q/metrics
+      interval: 30s
+      scrapeTimeout: 10s

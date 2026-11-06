@@ -12,6 +12,7 @@ resources:
   - service.yaml
   - route.yaml
   - onboarding.yaml
+  - servicemonitor.yaml
 
 configMapGenerator:
   - name: operations-console-config
