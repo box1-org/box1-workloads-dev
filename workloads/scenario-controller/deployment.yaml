@@ -10,11 +10,10 @@ spec:
   replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
+  # One replica, never two at once: a new pod aborts any open run at startup, so it must not overlap the old pod
+  # (box1-docs#19 review ARCH-1/OPS-1/PERS-5). A rollout has a short gap instead.
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: scenario-controller
@@ -58,6 +57,9 @@ spec:
             - name: FULFILLMENT_ADAPTER_URL
               value: http://fulfillment-adapter.fulfillment-adapter-dev.svc:8080
             # People call the controller with tokens from the public CLI client; roles come from scenario-controller.
+            # Gate 3: the upstream and token URL hosts must be on this list.
+            - name: SCENARIO_UPSTREAM_HOST_ALLOWLIST
+              value: order-service.order-service-dev.svc,inventory-service.inventory-service-dev.svc,fulfillment-adapter.fulfillment-adapter-dev.svc,keycloak.apps.ocp.box1.org
             - name: SCENARIO_ALLOWED_AZP
               value: scenario-controller-cli
             # Inventory admin identity: the scenario-controller client's service account. The secret is provisioned
