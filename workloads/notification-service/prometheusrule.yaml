@@ -1,0 +1,22 @@
+# Availability alert (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: notification-service-availability
+  namespace: notification-service-dev
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-notification-service
+      interval: 30s
+      rules:
+      - alert: Box1ServiceDown
+        expr: absent(up{job="notification-service"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: notification-service
+        annotations:
+          summary: "notification-service is not being scraped successfully"
+          description: "No successful scrape of notification-service in notification-service-dev for 2 minutes. Check the pod and /q/metrics."

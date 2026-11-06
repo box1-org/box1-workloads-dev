@@ -1,0 +1,43 @@
+# Order flow alerts (box1-docs#22). "Stuck" is defined by order-service:
+# open longer than ORDER_STUCK_AFTER_SECONDS (900 s).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: order-service-flow
+  namespace: order-service-dev
+  labels:
+    # Evaluate in the user-workload Prometheus (not Thanos Ruler): lower alert
+    # latency; these rules only need this namespace's metrics.
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-orders
+      interval: 30s
+      rules:
+      - alert: Box1OrdersStuck
+        expr: max(box1_orders_stuck) > 0
+        for: 5m
+        labels:
+          severity: warning
+          service: order-service
+        annotations:
+          summary: "Orders have been open for more than 15 minutes"
+          description: "{{ $value }} order(s) are stuck; the oldest open order is shown on the Box1 order flow dashboard. Read /api/v1/orders/{orderId}/timeline and the trace."
+      - alert: Box1OrderOutboxDelayed
+        expr: max(box1_outbox_oldest_pending_age_seconds) > 60
+        for: 2m
+        labels:
+          severity: warning
+          service: order-service
+        annotations:
+          summary: "Order events are not being published"
+          description: "Oldest unpublished order event is {{ $value | humanizeDuration }} old. Check Kafka and the order-service outbox publisher."
+      - alert: Box1ServiceDown
+        expr: absent(up{job="order-service"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: order-service
+        annotations:
+          summary: "order-service is not being scraped successfully"
+          description: "No successful scrape of order-service in order-service-dev for 2 minutes. Check the pod and /q/metrics."

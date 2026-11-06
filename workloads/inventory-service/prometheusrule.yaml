@@ -1,0 +1,33 @@
+# Inventory alerts (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: inventory-service-flow
+  namespace: inventory-service-dev
+  labels:
+    # Evaluate in the user-workload Prometheus (not Thanos Ruler): lower alert
+    # latency; these rules only need this namespace's metrics.
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-inventory
+      interval: 30s
+      rules:
+      - alert: Box1InventoryDeadLetters
+        expr: max(box1_inventory_dlq_depth) > 0
+        for: 5m
+        labels:
+          severity: warning
+          service: inventory-service
+        annotations:
+          summary: "Inventory has dead-lettered events"
+          description: "{{ $value }} event(s) are in the inventory dead-letter queue."
+      - alert: Box1ServiceDown
+        expr: absent(up{job="inventory-service"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: inventory-service
+        annotations:
+          summary: "inventory-service is not being scraped successfully"
+          description: "No successful scrape of inventory-service in inventory-service-dev for 2 minutes. Check the pod and /q/metrics."

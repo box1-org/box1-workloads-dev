@@ -1,0 +1,15 @@
+# Scraped by OpenShift user-workload monitoring (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: scenario-controller
+  namespace: scenario-controller-dev
+spec:
+  selector:
+    matchLabels:
+      backstage.io/kubernetes-id: scenario-controller
+  endpoints:
+    - port: http
+      path: /q/metrics
+      interval: 30s
+      scrapeTimeout: 10s

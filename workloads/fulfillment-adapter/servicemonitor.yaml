@@ -1,0 +1,15 @@
+# Scraped by OpenShift user-workload monitoring (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fulfillment-adapter
+  namespace: fulfillment-adapter-dev
+spec:
+  selector:
+    matchLabels:
+      backstage.io/kubernetes-id: fulfillment-adapter
+  endpoints:
+    - port: http
+      path: /q/metrics
+      interval: 15s
+      scrapeTimeout: 10s
