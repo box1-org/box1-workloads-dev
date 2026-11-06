@@ -41,6 +41,38 @@ spec:
           envFrom:
             - configMapRef:
                 name: notification-service-config
+          # Settings added after onboarding live here, not in the hashed ConfigMap (box1-docs#42 lesson).
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            # First-start offset policy (box1-docs#16 D-006): events that occurred before this instant never become
+            # notices, so the new consumer group does not turn order and shipment history into a flood of notices.
+            - name: NOTIFY_EVENTS_FLOOR
+              value: '2026-11-06T04:57:00Z'
+            # Stub fault control stays off until the user names a demo namespace (box1-docs#16 D-009).
+            - name: NOTIFY_STUB_FAULTS_ENABLED
+              value: 'false'
+            - name: NOTIFY_STUB_FAULT_NAMESPACES
+              value: ''
+            # Operator console tokens are not accepted until the user approves it (box1-docs#16 D-007).
+            - name: NOTIFY_AUTH_CONSOLE_CLIENT_ID
+              value: ''
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://notification-service-postgres:5432/notification_service
+            - name: QUARKUS_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: notification-service-postgres
+                  key: POSTGRESQL_USER
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: notification-service-postgres
+                  key: POSTGRESQL_PASSWORD
+            - name: JDK_JAVA_OPTIONS
+              value: -XX:+ExitOnOutOfMemoryError
 
           resources:
             requests:
