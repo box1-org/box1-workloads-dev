@@ -15,6 +15,7 @@ resources:
 
   - postgres.yaml
   - servicemonitor.yaml
+  - prometheusrule.yaml
 
 configMapGenerator:
   - name: scenario-controller-config

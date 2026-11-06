@@ -14,6 +14,7 @@ resources:
   - onboarding.yaml
   - postgres.yaml
   - servicemonitor.yaml
+  - prometheusrule.yaml
 
 configMapGenerator:
   - name: asset-service-config

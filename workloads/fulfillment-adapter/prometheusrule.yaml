@@ -6,6 +6,10 @@ kind: PrometheusRule
 metadata:
   name: fulfillment-adapter-erp
   namespace: fulfillment-adapter-dev
+  labels:
+    # Evaluate in the user-workload Prometheus (not Thanos Ruler): lower alert
+    # latency; these rules only need this namespace's metrics.
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
 spec:
   groups:
     - name: box1-erp
@@ -13,7 +17,7 @@ spec:
       rules:
       - alert: Box1ErpAcknowledgementDelayed
         expr: max(fulfillment_oldest_unacknowledged_seconds) > 30
-        for: 30s
+        for: 15s
         labels:
           severity: warning
           service: fulfillment-adapter

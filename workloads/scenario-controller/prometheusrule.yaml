@@ -1,0 +1,22 @@
+# Availability alert (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: scenario-controller-availability
+  namespace: scenario-controller-dev
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-scenario-controller
+      interval: 30s
+      rules:
+      - alert: Box1ServiceDown
+        expr: absent(up{job="scenario-controller"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: scenario-controller
+        annotations:
+          summary: "scenario-controller is not being scraped successfully"
+          description: "No successful scrape of scenario-controller in scenario-controller-dev for 2 minutes. Check the pod and /q/metrics."

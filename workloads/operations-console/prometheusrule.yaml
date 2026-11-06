@@ -1,0 +1,22 @@
+# Availability alert (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: operations-console-availability
+  namespace: operations-console-dev
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-operations-console
+      interval: 30s
+      rules:
+      - alert: Box1ServiceDown
+        expr: absent(up{job="operations-console"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: operations-console
+        annotations:
+          summary: "operations-console is not being scraped successfully"
+          description: "No successful scrape of operations-console in operations-console-dev for 2 minutes. Check the pod and /q/metrics."

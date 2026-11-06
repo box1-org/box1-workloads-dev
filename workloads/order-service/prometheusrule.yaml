@@ -5,6 +5,10 @@ kind: PrometheusRule
 metadata:
   name: order-service-flow
   namespace: order-service-dev
+  labels:
+    # Evaluate in the user-workload Prometheus (not Thanos Ruler): lower alert
+    # latency; these rules only need this namespace's metrics.
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
 spec:
   groups:
     - name: box1-orders

@@ -13,6 +13,7 @@ resources:
   - route.yaml
   - onboarding.yaml
   - servicemonitor.yaml
+  - prometheusrule.yaml
 
 configMapGenerator:
   - name: operations-console-config

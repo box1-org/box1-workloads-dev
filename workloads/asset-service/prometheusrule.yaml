@@ -1,0 +1,22 @@
+# Availability alert (box1-docs#22).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: asset-service-availability
+  namespace: asset-service-dev
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-asset-service
+      interval: 30s
+      rules:
+      - alert: Box1ServiceDown
+        expr: absent(up{job="asset-service"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: asset-service
+        annotations:
+          summary: "asset-service is not being scraped successfully"
+          description: "No successful scrape of asset-service in asset-service-dev for 2 minutes. Check the pod and /q/metrics."
