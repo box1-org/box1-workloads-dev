@@ -1,7 +1,9 @@
 # ERP SFTP endpoint for the fulfillment adapter (box1-docs#25). In the guest,
 # box1-erp-sftpd listens on 2222 (SFTP-only, account erpsftp, chrooted to the
-# exchange); the admin sshd on 22 is reached only through virtctl (KubeVirt API).
-# Internal only: no Route, and only the adapter's pods may connect.
+# exchange). Internal only: no Route, and only the adapter's pods may reach 2222.
+# Port 22 (admin sshd, key-only) stays open as before this policy existed:
+# `virtctl ssh` port-forwards reach the VM pod as ordinary ingress, so admin
+# access and the pipeline's box1-bootc-apply deploys depend on it.
 ---
 apiVersion: v1
 kind: Service
@@ -40,3 +42,6 @@ spec:
     ports:
     - protocol: TCP
       port: 2222
+  - ports:
+    - protocol: TCP
+      port: 22
