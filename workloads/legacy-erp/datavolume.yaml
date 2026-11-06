@@ -12,7 +12,7 @@ metadata:
 spec:
   source:
     registry:
-      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/legacy-erp-disk@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/legacy-erp-disk@sha256:59c835d093d8b8f35d2f0380280d86efdaee2208015d290b33afc7f315fb558a
       pullMethod: node
   storage:
     storageClassName: lvms-vg1
