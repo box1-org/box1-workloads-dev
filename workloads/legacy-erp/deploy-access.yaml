@@ -1,0 +1,53 @@
+# Pipeline deploys (box1-docs#25): box1-ci/ci-vm-deploy runs the central
+# box1-bootc-apply Task, which uses `virtctl ssh` as guest user box1-deploy.
+# That user's sudoers (in the legacy-erp image) allow only
+# `bootc upgrade --apply` and `bootc status --format json`.
+# The private key is Secret box1-ci/legacy-erp-deploy-ssh, created outside Git.
+# Only the public key is stored here; KubeVirt delivers it through the guest agent.
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "legacy-erp-deploy-ssh"
+  namespace: "legacy-erp-dev"
+type: Opaque
+stringData:
+  key1: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLnQZjF1dLh8+V+ucJaMOBUvcy6DCOyd3qT6pejiqYA box1-ci legacy-erp deploy"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "legacy-erp-deployer"
+  namespace: "legacy-erp-dev"
+rules:
+- apiGroups:
+  - kubevirt.io
+  resources:
+  - virtualmachineinstances
+  resourceNames:
+  - "legacy-erp"
+  verbs:
+  - get
+- apiGroups:
+  - subresources.kubevirt.io
+  resources:
+  - virtualmachineinstances/portforward
+  resourceNames:
+  - "legacy-erp"
+  verbs:
+  - get
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "legacy-erp-deployer"
+  namespace: "legacy-erp-dev"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "legacy-erp-deployer"
+subjects:
+- kind: ServiceAccount
+  name: ci-vm-deploy
+  namespace: box1-ci
