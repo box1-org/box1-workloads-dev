@@ -1,0 +1,20 @@
+# ERP data disk (box1-docs#25): ledger, audit history, file spool and settings,
+# mounted in the guest at /srv/box1-erp by its serial (virtio-erpdata). The guest
+# formats it only when it carries no filesystem signature. Kept separate from the
+# root DataVolume so a root-disk rebuild or OS update never touches ERP state.
+# Argo must never prune or delete it; deleting it deletes the ledger.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "legacy-erp-data"
+  namespace: "legacy-erp-dev"
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  storageClassName: lvms-vg1
+  volumeMode: Block
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 2Gi

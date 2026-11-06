@@ -27,6 +27,14 @@ spec:
             propagationMethod:
               qemuGuestAgent:
                 users: [cloud-user]
+        # Pipeline deploys only (deploy-access.yaml); sudo limited to bootc in the image.
+        - sshPublicKey:
+            source:
+              secret:
+                secretName: "legacy-erp-deploy-ssh"
+            propagationMethod:
+              qemuGuestAgent:
+                users: [box1-deploy]
       domain:
         cpu:
           cores: 2
@@ -53,6 +61,11 @@ spec:
               serial: regtoken
               disk:
                 bus: virtio
+            # ERP data disk, mounted at /srv/box1-erp from /dev/disk/by-id/virtio-erpdata.
+            - name: erpdata
+              serial: erpdata
+              disk:
+                bus: virtio
           interfaces:
             - name: default
               masquerade: {}
@@ -69,3 +82,6 @@ spec:
         - name: regtoken
           secret:
             secretName: "legacy-erp-updater-token"
+        - name: erpdata
+          persistentVolumeClaim:
+            claimName: "legacy-erp-data"
