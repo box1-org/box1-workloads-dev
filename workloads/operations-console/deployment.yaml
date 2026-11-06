@@ -7,6 +7,8 @@ metadata:
     box1.org/source-revision: 5023cda62577925d4896abb50e7420f2a8232a20
     box1.org/build-pipelinerun: box1-ci/onb-operations-console-5023cda6
 spec:
+  # One replica: without a Secret-backed CONSOLE_SESSION_KEY each pod generates its own session key, so a second
+  # replica would cause login loops and every rollout signs users out (box1-docs#18 decision D-003, as #63).
   replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
@@ -41,6 +43,25 @@ spec:
           envFrom:
             - configMapRef:
                 name: operations-console-config
+          # Console settings (box1-docs#18). Deployment env, not ConfigMap literals: a changed literal orphans the
+          # hashed ConfigMap and, without prune, Argo stays OutOfSync and the release smoke task fails.
+          env:
+            - name: ORDER_SERVICE_URL
+              value: http://order-service.order-service-dev.svc:8080
+            - name: INVENTORY_SERVICE_URL
+              value: http://inventory-service.inventory-service-dev.svc:8080
+            - name: FULFILLMENT_ADAPTER_URL
+              value: http://fulfillment-adapter.fulfillment-adapter-dev.svc:8080
+            - name: ASSET_SERVICE_URL
+              value: http://asset-service.asset-service-dev.svc:8080
+            # none until the user decides gap G-1 (no published order-to-fulfillment link); derived uses
+            # order-service's internal ful_<id> convention.
+            - name: CONSOLE_FULFILLMENT_LINK
+              value: none
+            - name: CONSOLE_PUBLIC_ORIGIN
+              value: https://operations-console-dev.apps.ocp.box1.org
+            - name: CONSOLE_ENVIRONMENT
+              value: operations-console-dev
 
           resources:
             requests:
