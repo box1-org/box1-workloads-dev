@@ -56,11 +56,13 @@ spec:
             # Load runs (not chaos) are allowed here; chaos also needs the allowlist below.
             - name: ASSET_CONTROL_ENABLED
               value: 'true'
-            # Chaos stays off until the user names the namespace where it is allowed (box1-docs#15 D-015).
+            # Chaos is allowed in asset-service-dev only (user decision 2026-11-06, box1-docs#15 D-015, box1-docs#80):
+            # telemetry-only catalog, chaos-operator role and typed-namespace confirmation still required per run.
+            # Set 'false' and an empty allowlist to close the gate again.
             - name: ASSET_CHAOS_ENABLED
-              value: 'false'
+              value: 'true'
             - name: ASSET_CHAOS_NAMESPACE_ALLOWLIST
-              value: ''
+              value: asset-service-dev
             - name: QUARKUS_DATASOURCE_JDBC_URL
               value: jdbc:postgresql://asset-service-postgres:5432/asset_service
             - name: QUARKUS_DATASOURCE_USERNAME
