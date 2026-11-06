@@ -54,10 +54,11 @@ spec:
               value: http://fulfillment-adapter.fulfillment-adapter-dev.svc:8080
             - name: ASSET_SERVICE_URL
               value: http://asset-service.asset-service-dev.svc:8080
-            # none until the user decides gap G-1 (no published order-to-fulfillment link); derived uses
-            # order-service's internal ful_<id> convention.
+            # derived: order-service's internal ful_<id> convention, labelled "derived link" in the console (user
+            # decision 2026-11-06, box1-docs#18 G-1). Back to none if the convention changes; the permanent fix is
+            # order-service exposing fulfillmentRequestId.
             - name: CONSOLE_FULFILLMENT_LINK
-              value: none
+              value: derived
             - name: CONSOLE_PUBLIC_ORIGIN
               value: https://operations-console-dev.apps.ocp.box1.org
             - name: CONSOLE_ENVIRONMENT
