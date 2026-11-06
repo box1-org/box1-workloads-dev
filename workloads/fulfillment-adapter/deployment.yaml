@@ -4,8 +4,8 @@ metadata:
   name: fulfillment-adapter
   namespace: fulfillment-adapter-dev
   annotations:
-    box1.org/source-revision: 4c985222a098e3a04f102c3da1e23db2f5bdb7bd
-    box1.org/build-pipelinerun: box1-ci/fulfillment-adapter-release-ckkb4
+    box1.org/source-revision: 5f1d5fdd090e53cb2b29cadb6c861011ca08866f
+    box1.org/build-pipelinerun: box1-ci/fulfillment-adapter-release-l6t6v
 spec:
   replicas: 1
   revisionHistoryLimit: 3
