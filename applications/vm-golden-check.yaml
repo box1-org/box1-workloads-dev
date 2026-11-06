@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "vm-golden-check"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: vm-golden-check
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/vm-golden-check
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "vm-golden-check-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
