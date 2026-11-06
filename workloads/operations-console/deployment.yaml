@@ -63,6 +63,13 @@ spec:
               value: https://operations-console-dev.apps.ocp.box1.org
             - name: CONSOLE_ENVIRONMENT
               value: operations-console-dev
+            # Demo control drives the scenario controller with the signed-in person's token, sent to it and no other
+            # upstream (box1-docs#19). Needs the console client's scenario-controller audience (box1-gitops) and
+            # operations-console in the controller's SCENARIO_ALLOWED_AZP. Unset either to go back to read-only.
+            - name: SCENARIO_CONTROLLER_URL
+              value: http://scenario-controller.scenario-controller-dev.svc:8080
+            - name: CONSOLE_SCENARIO_FORWARD_TOKEN
+              value: "true"
 
           resources:
             requests:
