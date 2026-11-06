@@ -9,9 +9,9 @@ metadata:
   name: "legacy-erp"
   namespace: "legacy-erp-dev"
   annotations:
-    box1.org/os-image-digest: sha256:c1dcb154c8ccb8293964f08c12a4cfa03e52354d5e391048c5cf07e14dd3bb6e
-    box1.org/source-revision: d7eb3096da892b153718c19129383f0b18d20ff2
-    box1.org/build-pipelinerun: box1-ci/legacy-erp-release-nrbhc
+    box1.org/os-image-digest: sha256:a531a07f2dce27c41e280a656e31637ab44b33920baa20ab5b0ed492cf66d161
+    box1.org/source-revision: 8447cb97b95c535431c639be264529048d96c876
+    box1.org/build-pipelinerun: box1-ci/legacy-erp-release-k8whl
 spec:
   runStrategy: Always
   template:
