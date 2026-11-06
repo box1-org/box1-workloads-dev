@@ -49,6 +49,9 @@ spec:
                   fieldPath: metadata.namespace
             - name: ASSET_ENVIRONMENT
               value: dev
+            # Load runs (not chaos) are allowed here; chaos also needs the allowlist below.
+            - name: ASSET_CONTROL_ENABLED
+              value: 'true'
             # Chaos stays off until the user names the namespace where it is allowed (box1-docs#15 D-015).
             - name: ASSET_CHAOS_ENABLED
               value: 'false'
@@ -72,7 +75,8 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              # Measured RSS 213-232 MiB at 50 readings/s with a 256 MiB heap; consumer catch-up adds fetch buffers.
+              memory: 320Mi
             limits:
               cpu: '1'
               memory: 512Mi

@@ -1,12 +1,16 @@
 # PostgreSQL for asset-service (box1-docs#15, decision D-014).
 # Unlike the template pattern, this file holds NO Secret. Secret asset-service-postgres is created out of band,
 # once, with keys POSTGRESQL_DATABASE, POSTGRESQL_USER and POSTGRESQL_PASSWORD (see the service runbook).
-# Argo CD does not manage it. Until it exists, both pods wait in CreateContainerConfigError, which is harmless.
+# Argo CD does not manage it. Until it exists, both pods wait in CreateContainerConfigError: the old application pod keeps
+# serving, but the rollout cannot complete and Argo reports the app unhealthy. Create the Secret before merging this.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: asset-service-postgres-data
   namespace: asset-service-dev
+  annotations:
+    # Never let Argo CD prune or delete the data volume.
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   accessModes: [ReadWriteOnce]
   resources:
@@ -34,6 +38,10 @@ spec:
         app.kubernetes.io/name: asset-service-postgres
     spec:
       automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: postgres
           image: registry.redhat.io/rhel9/postgresql-15@sha256:95e94264e14133d80ddbc9980eeebf4806d6668a61cbc1917e57efa1941b516b
@@ -43,6 +51,10 @@ spec:
           envFrom:
             - secretRef:
                 name: asset-service-postgres
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
           resources:
             requests:
               cpu: 50m
