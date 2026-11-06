@@ -12,7 +12,7 @@ metadata:
 spec:
   source:
     registry:
-      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/vm-golden-check-disk@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/vm-golden-check-disk@sha256:f45a9940f399fc19a7ae53864be06e479fcb0985e91b1ab347f782d93a02b831
       pullMethod: node
   storage:
     storageClassName: lvms-vg1
