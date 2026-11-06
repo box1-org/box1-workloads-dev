@@ -41,6 +41,33 @@ spec:
           envFrom:
             - configMapRef:
                 name: asset-service-config
+          # Settings added after onboarding live here, not in the hashed ConfigMap (box1-docs#42 lesson).
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: ASSET_ENVIRONMENT
+              value: dev
+            # Chaos stays off until the user names the namespace where it is allowed (box1-docs#15 D-015).
+            - name: ASSET_CHAOS_ENABLED
+              value: 'false'
+            - name: ASSET_CHAOS_NAMESPACE_ALLOWLIST
+              value: ''
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://asset-service-postgres:5432/asset_service
+            - name: QUARKUS_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: asset-service-postgres
+                  key: POSTGRESQL_USER
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: asset-service-postgres
+                  key: POSTGRESQL_PASSWORD
+            - name: JDK_JAVA_OPTIONS
+              value: -XX:+ExitOnOutOfMemoryError
 
           resources:
             requests:
