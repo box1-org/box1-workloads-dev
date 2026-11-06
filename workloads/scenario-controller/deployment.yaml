@@ -38,6 +38,43 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          # Scenario control (box1-docs#19, D-006, D-009). Both gates are required; the namespace comes from the
+          # downward API, so a copy deployed elsewhere refuses every scenario.
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: SCENARIO_CONTROL_ENABLED
+              value: "true"
+            - name: SCENARIO_NAMESPACE_ALLOWLIST
+              value: scenario-controller-dev
+            - name: SCENARIO_ENVIRONMENT
+              value: dev
+            - name: ORDER_SERVICE_URL
+              value: http://order-service.order-service-dev.svc:8080
+            - name: INVENTORY_SERVICE_URL
+              value: http://inventory-service.inventory-service-dev.svc:8080
+            - name: FULFILLMENT_ADAPTER_URL
+              value: http://fulfillment-adapter.fulfillment-adapter-dev.svc:8080
+            # People call the controller with tokens from the public CLI client; roles come from scenario-controller.
+            - name: SCENARIO_ALLOWED_AZP
+              value: scenario-controller-cli
+            # Inventory admin identity: the scenario-controller client's service account. The secret is provisioned
+            # by the user (approval-gated) into Secret scenario-controller-inventory-token; until it exists, seeding
+            # and reset report "Inventory admin identity is not configured".
+            - name: INVENTORY_TOKEN_URL
+              value: https://keycloak.apps.ocp.box1.org/auth/realms/box1/protocol/openid-connect/token
+            - name: INVENTORY_TOKEN_CLIENT_ID
+              value: scenario-controller
+            - name: INVENTORY_TOKEN_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: scenario-controller-inventory-token
+                  key: client-secret
+                  optional: true
+            - name: JDK_JAVA_OPTIONS
+              value: -XX:+ExitOnOutOfMemoryError
           envFrom:
             - configMapRef:
                 name: scenario-controller-config
