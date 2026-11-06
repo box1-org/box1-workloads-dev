@@ -4,8 +4,8 @@ metadata:
   name: notification-service
   namespace: notification-service-dev
   annotations:
-    box1.org/source-revision: 3db3fbcb7110dc93e82428014c7868a7da159c59
-    box1.org/build-pipelinerun: box1-ci/onb-notification-service-3db3fbcb
+    box1.org/source-revision: bacc3538a3dfc8e7eace15bcde967897cd3a90c8
+    box1.org/build-pipelinerun: box1-ci/notification-service-release-mpbtb
 spec:
   replicas: 1
   revisionHistoryLimit: 3
