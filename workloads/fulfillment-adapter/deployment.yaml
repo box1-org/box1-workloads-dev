@@ -41,11 +41,28 @@ spec:
           envFrom:
             - configMapRef:
                 name: fulfillment-adapter-config
-
+            # Created out of band before sync; never in Git (see postgres.yaml, box1-docs#41).
+            - secretRef:
+                name: fulfillment-adapter-postgres
+          # Plain env entries, not generator literals, so a change cannot orphan a hashed ConfigMap.
+          env:
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://fulfillment-adapter-postgres:5432/fulfillment_adapter
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: fulfillment_adapter
+            # Off until the ERP VM (#25) and the SFTP credential (D-007) exist; accepted work stays queued.
+            - name: FULFILLMENT_SFTP_ENABLED
+              value: "false"
+            # Status reads carry IDs and codes only (D-016); writes and /internal always need the role.
+            - name: FULFILLMENT_READ_POLICY
+              value: permit
+            # A heap OOM could otherwise leave a live pod with a dead consumer.
+            - name: JDK_JAVA_OPTIONS
+              value: "-XX:+ExitOnOutOfMemoryError"
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 384Mi
             limits:
               cpu: '1'
               memory: 512Mi
@@ -61,7 +78,8 @@ spec:
               path: /q/health/ready
               port: http
             periodSeconds: 5
-            timeoutSeconds: 2
+            # Covers the datasource acquisition timeout (5 s) when the pool is busy.
+            timeoutSeconds: 5
             failureThreshold: 3
           livenessProbe:
             httpGet:
@@ -78,7 +96,16 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: sftp
+              mountPath: /var/run/secrets/box1/sftp
+              readOnly: true
       volumes:
         - name: tmp
           emptyDir:
             sizeLimit: 64Mi
+        # id_ed25519 and known_hosts, provisioned out of band after approval (D-007). Optional: absent until then.
+        - name: sftp
+          secret:
+            secretName: fulfillment-adapter-sftp
+            optional: true
+            defaultMode: 0440

@@ -1,1 +1,97 @@
-
+# PostgreSQL for the fulfillment adapter (box1-docs#13, run decision D-012 option A).
+# No Secret is declared here. Before this is synced, the operator creates the Secret out of band:
+#   oc -n fulfillment-adapter-dev create secret generic fulfillment-adapter-postgres \
+#     --from-literal=POSTGRESQL_DATABASE=fulfillment_adapter --from-literal=POSTGRESQL_USER=fulfillment_adapter \
+#     --from-literal=POSTGRESQL_PASSWORD="$PW" --from-literal=QUARKUS_DATASOURCE_PASSWORD="$PW"
+# with $PW a freshly generated value that is never committed (box1-docs#41 tracks a managed secret store).
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fulfillment-adapter-postgres-data
+  namespace: fulfillment-adapter-dev
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fulfillment-adapter-postgres
+  namespace: fulfillment-adapter-dev
+  labels:
+    app.kubernetes.io/name: fulfillment-adapter-postgres
+    app.kubernetes.io/part-of: fulfillment-adapter
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fulfillment-adapter-postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fulfillment-adapter-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: registry.redhat.io/rhel9/postgresql-15@sha256:95e94264e14133d80ddbc9980eeebf4806d6668a61cbc1917e57efa1941b516b
+          ports:
+            - name: postgres
+              containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: fulfillment-adapter-postgres
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: '1'
+              memory: 512Mi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/pgsql/data
+          readinessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "pg_isready -U \"$POSTGRESQL_USER\" -d \"$POSTGRESQL_DATABASE\""]
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: fulfillment-adapter-postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fulfillment-adapter-postgres
+  namespace: fulfillment-adapter-dev
+spec:
+  selector:
+    app.kubernetes.io/name: fulfillment-adapter-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: fulfillment-adapter-postgres
+  namespace: fulfillment-adapter-dev
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: fulfillment-adapter-postgres
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: fulfillment-adapter
+      ports:
+        - protocol: TCP
+          port: 5432

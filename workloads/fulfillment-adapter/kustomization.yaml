@@ -12,6 +12,7 @@ resources:
   - service.yaml
   - route.yaml
   - onboarding.yaml
+  - postgres.yaml
 
 configMapGenerator:
   - name: fulfillment-adapter-config
