@@ -1,0 +1,71 @@
+# Halted until the first promotion records the OS image, adds datavolume.yaml to the
+# kustomization and sets runStrategy: Always. Later promotions only update the
+# box1.org/* annotations (no restart); apply them in the guest with
+# `sudo bootc upgrade --apply`.
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: "legacy-erp"
+  namespace: "legacy-erp-dev"
+  annotations:
+    box1.org/os-image-digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    box1.org/source-revision: dba36b0c5a780adf08c17986b030f3ec56bb637e
+    box1.org/build-pipelinerun: awaiting-first-release
+spec:
+  runStrategy: Halted
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: "legacy-erp"
+    spec:
+      accessCredentials:
+        - sshPublicKey:
+            source:
+              secret:
+                secretName: "legacy-erp-admin-ssh"
+            propagationMethod:
+              qemuGuestAgent:
+                users: [cloud-user]
+      domain:
+        cpu:
+          cores: 2
+        memory:
+          guest: 4Gi
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: false
+        devices:
+          autoattachSerialConsole: true
+          rng: {}
+          disks:
+            - name: root
+              bootOrder: 1
+              disk:
+                bus: virtio
+            # Read by box1-registry-setup.service as /dev/disk/by-id/virtio-<serial>.
+            - name: serviceca
+              serial: serviceca
+              disk:
+                bus: virtio
+            - name: regtoken
+              serial: regtoken
+              disk:
+                bus: virtio
+          interfaces:
+            - name: default
+              masquerade: {}
+      networks:
+        - name: default
+          pod: {}
+      volumes:
+        - name: root
+          dataVolume:
+            name: "legacy-erp-root"
+        - name: serviceca
+          configMap:
+            name: openshift-service-ca.crt
+        - name: regtoken
+          secret:
+            secretName: "legacy-erp-updater-token"

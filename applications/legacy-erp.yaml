@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "legacy-erp"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: legacy-erp
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/legacy-erp
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "legacy-erp-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
