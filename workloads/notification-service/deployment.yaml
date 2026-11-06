@@ -51,14 +51,18 @@ spec:
             # notices, so the new consumer group does not turn order and shipment history into a flood of notices.
             - name: NOTIFY_EVENTS_FLOOR
               value: '2026-11-06T18:03:00Z'
-            # Stub fault control stays off until the user names a demo namespace (box1-docs#16 D-009).
+            # Stub fault control: the user named notification-service-dev as the demo namespace (box1-docs#16, 2026-11-06).
+            # Each fault run still needs approval; TTL, bounds and audit are enforced by the service.
             - name: NOTIFY_STUB_FAULTS_ENABLED
-              value: 'false'
+              value: 'true'
             - name: NOTIFY_STUB_FAULT_NAMESPACES
-              value: ''
-            # Operator console tokens are not accepted until the user approves it (box1-docs#16 D-007).
+              value: notification-service-dev
+            # Operator console tokens are accepted for reading only (user decision 2026-11-06, box1-docs#16 D-007):
+            # console-viewer/console-operator -> notification-reader; never fault control.
             - name: NOTIFY_AUTH_CONSOLE_CLIENT_ID
-              value: ''
+              value: operations-console
+            - name: NOTIFY_JWT_AUDIENCES
+              value: notification-service,operations-console
             - name: QUARKUS_DATASOURCE_JDBC_URL
               value: jdbc:postgresql://notification-service-postgres:5432/notification_service
             - name: QUARKUS_DATASOURCE_USERNAME
