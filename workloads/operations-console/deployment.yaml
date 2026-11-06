@@ -4,8 +4,8 @@ metadata:
   name: operations-console
   namespace: operations-console-dev
   annotations:
-    box1.org/source-revision: ed2c1aca8983e672ede2a792cdb80528d835bf7e
-    box1.org/build-pipelinerun: box1-ci/operations-console-release-jm4cm
+    box1.org/source-revision: 96f4a976fa7d72d6db31d2b4465a7e8ef4c84df4
+    box1.org/build-pipelinerun: box1-ci/operations-console-release-f5xpb
 spec:
   # One replica: without a Secret-backed CONSOLE_SESSION_KEY each pod generates its own session key, so a second
   # replica would cause login loops and every rollout signs users out (box1-docs#18 decision D-003, as #63).
