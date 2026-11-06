@@ -5,9 +5,9 @@ metadata:
   namespace: operations-console-dev
   annotations:
     box1.org/source-revision: 5023cda62577925d4896abb50e7420f2a8232a20
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-operations-console-5023cda6
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
