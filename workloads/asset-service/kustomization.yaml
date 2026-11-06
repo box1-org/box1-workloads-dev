@@ -18,6 +18,9 @@ configMapGenerator:
   - name: asset-service-config
     namespace: asset-service-dev
     literals:
+      - QUARKUS_OTEL_TRACES_SAMPLER_ARG=1.0
+      - QUARKUS_OTEL_EXPORTER_OTLP_ENDPOINT=http://box1-collector.box1-observability.svc:4317
+      - QUARKUS_OTEL_RESOURCE_ATTRIBUTES=deployment.environment=dev
       - GREETING_PREFIX=Hello from box1
       - JAVA_TOOL_OPTIONS=-XX:MaxRAMPercentage=50.0 -Djava.io.tmpdir=/tmp
 
