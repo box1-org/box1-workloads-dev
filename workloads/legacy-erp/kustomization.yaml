@@ -13,4 +13,5 @@ resources:
   - datavolume.yaml
   - erp-data.yaml
   - deploy-access.yaml
+  - sftp.yaml
   - onboarding.yaml

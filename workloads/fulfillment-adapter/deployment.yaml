@@ -50,9 +50,14 @@ spec:
               value: jdbc:postgresql://fulfillment-adapter-postgres:5432/fulfillment_adapter
             - name: QUARKUS_DATASOURCE_USERNAME
               value: fulfillment_adapter
-            # Off until the ERP VM (#25) and the SFTP credential (D-007) exist; accepted work stays queued.
+            # ERP VM SFTP endpoint (box1-docs#25): Service legacy-erp-sftp:22 -> guest 2222, admitted
+            # only from this Deployment's pods. Key and known_hosts: Secret fulfillment-adapter-sftp (out of band).
             - name: FULFILLMENT_SFTP_ENABLED
-              value: "false"
+              value: "true"
+            - name: FULFILLMENT_SFTP_HOST
+              value: legacy-erp-sftp.legacy-erp-dev.svc
+            - name: FULFILLMENT_SFTP_PORT
+              value: "22"
             # Status reads carry IDs and codes only (D-016); writes and /internal always need the role.
             - name: FULFILLMENT_READ_POLICY
               value: permit
