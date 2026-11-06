@@ -50,7 +50,7 @@ spec:
             # First-start offset policy (box1-docs#16 D-006): events that occurred before this instant never become
             # notices, so the new consumer group does not turn order and shipment history into a flood of notices.
             - name: NOTIFY_EVENTS_FLOOR
-              value: '2026-11-06T04:57:00Z'
+              value: '2026-11-06T18:03:00Z'
             # Stub fault control stays off until the user names a demo namespace (box1-docs#16 D-009).
             - name: NOTIFY_STUB_FAULTS_ENABLED
               value: 'false'
