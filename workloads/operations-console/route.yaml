@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: operations-console
+  namespace: operations-console-dev
+spec:
+  host: operations-console-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: operations-console
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
