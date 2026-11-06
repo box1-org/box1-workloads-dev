@@ -1,0 +1,42 @@
+# ERP SFTP endpoint for the fulfillment adapter (box1-docs#25). In the guest,
+# box1-erp-sftpd listens on 2222 (SFTP-only, account erpsftp, chrooted to the
+# exchange); the admin sshd on 22 is reached only through virtctl (KubeVirt API).
+# Internal only: no Route, and only the adapter's pods may connect.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "legacy-erp-sftp"
+  namespace: "legacy-erp-dev"
+spec:
+  type: ClusterIP
+  selector:
+    vm.kubevirt.io/name: "legacy-erp"
+  ports:
+  - name: sftp
+    protocol: TCP
+    port: 22
+    targetPort: 2222
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: "legacy-erp-sftp"
+  namespace: "legacy-erp-dev"
+spec:
+  podSelector:
+    matchLabels:
+      vm.kubevirt.io/name: "legacy-erp"
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: fulfillment-adapter-dev
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/name: fulfillment-adapter
+    ports:
+    - protocol: TCP
+      port: 2222
