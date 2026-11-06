@@ -60,8 +60,9 @@ spec:
             # Gate 3: the upstream and token URL hosts must be on this list.
             - name: SCENARIO_UPSTREAM_HOST_ALLOWLIST
               value: order-service.order-service-dev.svc,inventory-service.inventory-service-dev.svc,fulfillment-adapter.fulfillment-adapter-dev.svc,keycloak.apps.ocp.box1.org
+            # Clients whose tokens may carry scenario roles: the CLI, and the operations console's Demo control (box1-docs#19).
             - name: SCENARIO_ALLOWED_AZP
-              value: scenario-controller-cli
+              value: scenario-controller-cli,operations-console
             # Inventory admin identity: the scenario-controller client's service account. The secret is provisioned
             # by the user (approval-gated) into Secret scenario-controller-inventory-token; until it exists, seeding
             # and reset report "Inventory admin identity is not configured".
