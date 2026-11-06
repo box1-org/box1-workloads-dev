@@ -27,4 +27,4 @@ configMapGenerator:
 images:
   - name: fulfillment-adapter
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/fulfillment-adapter
-    digest: sha256:23ff772302af82356616e1da36404cd44767ea4c05313cf89ef8c3dc997a1f26
+    digest: sha256:dd19f34b0a1d8eb3b88602126f47ca31871bedc16c851f3347984a2497c24cd1
