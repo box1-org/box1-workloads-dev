@@ -52,8 +52,10 @@ spec:
               value: deployment.environment=dev
             - name: OIDC_AUTH_SERVER_URL
               value: https://keycloak.apps.ocp.box1.org/auth/realms/box1
+            # operations-console: the console's Assistant forwards the person's token (box1-docs#101); the
+            # person's own aiops role is still checked in the service layer.
             - name: AIOPS_ALLOWED_AZP
-              value: agentic-operations-cli
+              value: agentic-operations-cli,operations-console
             - name: AIOPS_CONSUMER_GROUP
               value: agentic-operations
             # In-cluster vLLM only; never the public route (box1-docs#20 Q-3, #26).
