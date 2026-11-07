@@ -1,0 +1,48 @@
+# Istio ambient waypoint (L7 proxy) for operations-console-dev (box1-docs#23, decision 005).
+# Inactive until the Namespace carries istio.io/use-waypoint: waypoint.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: waypoint
+  namespace: operations-console-dev
+  labels:
+    istio.io/waypoint-for: service
+spec:
+  gatewayClassName: istio-waypoint
+  listeners:
+    - name: mesh
+      port: 15008
+      protocol: HBONE
+---
+# Waypoint spans go to the Box1 collector (mesh extension provider box1-otel)
+# and join the caller's W3C trace.
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+metadata:
+  name: waypoint-tracing
+  namespace: operations-console-dev
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: waypoint
+  tracing:
+    - providers:
+        - name: box1-otel
+      randomSamplingPercentage: 100
+---
+# L7 (istio_requests_total etc.) metrics from the waypoint into
+# user-workload monitoring, read by Kiali.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: waypoint
+  namespace: operations-console-dev
+spec:
+  selector:
+    matchLabels:
+      gateway.networking.k8s.io/gateway-name: waypoint
+  podMetricsEndpoints:
+    - targetPort: 15020
+      path: /stats/prometheus
+      interval: 30s

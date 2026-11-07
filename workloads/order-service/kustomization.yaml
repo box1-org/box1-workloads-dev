@@ -6,6 +6,7 @@ labels:
     includeSelectors: false
     includeTemplates: true
 resources:
+  - waypoint.yaml
   - namespace.yaml
   - serviceaccount.yaml
   - deployment.yaml
