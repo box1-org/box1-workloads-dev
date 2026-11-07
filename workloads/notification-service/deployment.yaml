@@ -51,7 +51,20 @@ spec:
             # notices, so the new consumer group does not turn order and shipment history into a flood of notices.
             - name: NOTIFY_EVENTS_FLOOR
               value: '2026-11-06T18:03:00Z'
-            # Stub fault control: the user named notification-service-dev as the demo namespace (box1-docs#16, 2026-11-06).
+            # Delivery through MailHog, the in-cluster SMTP sink (box1-gitops platform/mailhog, box1-docs#16). DELIVERED means
+            # accepted by MailHog; no message leaves the cluster. Needs an image with the MailHog provider: older images
+            # refuse to start with any provider but stub.
+            - name: NOTIFY_PROVIDER
+              value: mailhog
+            - name: NOTIFY_SMTP_HOST
+              value: mailhog.mailhog.svc.cluster.local
+            - name: NOTIFY_SMTP_PORT
+              value: '1025'
+            - name: NOTIFY_SMTP_FROM
+              value: box1-notifications@box1.local
+            - name: NOTIFY_SMTP_RECIPIENT_DOMAIN
+              value: box1.local
+            # Delivery fault control: the user named notification-service-dev as the demo namespace (box1-docs#16, 2026-11-06).
             # Each fault run still needs approval; TTL, bounds and audit are enforced by the service.
             - name: NOTIFY_STUB_FAULTS_ENABLED
               value: 'true'
