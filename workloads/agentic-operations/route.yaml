@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: agentic-operations
+  namespace: agentic-operations-dev
+spec:
+  host: agentic-operations-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: agentic-operations
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
