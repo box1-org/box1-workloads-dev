@@ -1,0 +1,15 @@
+# Scraped by OpenShift user-workload monitoring (box1-docs#22, #20).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: agentic-operations
+  namespace: agentic-operations-dev
+spec:
+  selector:
+    matchLabels:
+      backstage.io/kubernetes-id: agentic-operations
+  endpoints:
+    - port: http
+      path: /q/metrics
+      interval: 30s
+      scrapeTimeout: 10s
