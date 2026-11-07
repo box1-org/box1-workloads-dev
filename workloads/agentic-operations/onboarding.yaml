@@ -1,0 +1,94 @@
+---
+apiVersion: pipelinesascode.tekton.dev/v1alpha1
+kind: Repository
+metadata:
+  name: "agentic-operations"
+  namespace: box1-ci
+spec:
+  url: https://github.com/box1-org/agentic-operations
+  concurrency_limit: 1
+  settings:
+    pipelinerun_provenance: default_branch
+    github_app_token_scope_repos:
+    - box1-org/box1-workloads-dev
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "agentic-operations-image-puller"
+  namespace: box1-ci
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-puller
+subjects:
+- kind: ServiceAccount
+  name: "agentic-operations"
+  namespace: "agentic-operations-dev"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "agentic-operations-release-observer"
+  namespace: "agentic-operations-dev"
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  resourceNames:
+  - "agentic-operations"
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "agentic-operations-release-observer"
+  namespace: "agentic-operations-dev"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "agentic-operations-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "agentic-operations-release-observer"
+  namespace: openshift-gitops
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - applications
+  resourceNames:
+  - "agentic-operations"
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "agentic-operations-release-observer"
+  namespace: openshift-gitops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "agentic-operations-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
