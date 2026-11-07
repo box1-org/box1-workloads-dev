@@ -10,11 +10,11 @@ spec:
   replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
+  # One pod at a time (box1-docs#20 D-003, D-007; review R-4, M-2). Analyses and the Kafka evidence window live in
+  # memory in one pod. Two pods behind the Service would split GETs and Kafka partitions, so a rollout replaces the
+  # pod and briefly has none.
   strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: agentic-operations
@@ -41,6 +41,32 @@ spec:
           envFrom:
             - configMapRef:
                 name: agentic-operations-config
+          # Runtime settings in env, not ConfigMap literals: changing a hashed ConfigMap literal orphans the old
+          # ConfigMap and fails the release smoke check (see operations-console).
+          env:
+            - name: QUARKUS_OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://box1-collector.box1-observability.svc:4317
+            - name: QUARKUS_OTEL_TRACES_SAMPLER_ARG
+              value: "1.0"
+            - name: QUARKUS_OTEL_RESOURCE_ATTRIBUTES
+              value: deployment.environment=dev
+            - name: OIDC_AUTH_SERVER_URL
+              value: https://keycloak.apps.ocp.box1.org/auth/realms/box1
+            - name: AIOPS_ALLOWED_AZP
+              value: agentic-operations-cli
+            - name: AIOPS_CONSUMER_GROUP
+              value: agentic-operations
+            # In-cluster vLLM only; never the public route (box1-docs#20 Q-3, #26).
+            - name: VLLM_BASE_URL
+              value: http://vllm-test-2.vllm.svc:8000/v1
+            - name: MODEL_ID
+              value: box1-coder
+            - name: ORDER_SERVICE_URL
+              value: http://order-service.order-service-dev.svc:8080
+            - name: INVENTORY_SERVICE_URL
+              value: http://inventory-service.inventory-service-dev.svc:8080
+            - name: FULFILLMENT_ADAPTER_URL
+              value: http://fulfillment-adapter.fulfillment-adapter-dev.svc:8080
 
           resources:
             requests:

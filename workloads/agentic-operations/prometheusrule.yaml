@@ -1,0 +1,48 @@
+# Availability and analysis-path alerts (box1-docs#22, #20). The service proposes actions only; these alerts are for
+# the operator who runs it.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: agentic-operations-availability
+  namespace: agentic-operations-dev
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: box1-agentic-operations
+      interval: 30s
+      rules:
+      - alert: Box1ServiceDown
+        expr: absent(up{job="agentic-operations"} == 1)
+        for: 2m
+        labels:
+          severity: warning
+          service: agentic-operations
+        annotations:
+          summary: "agentic-operations is not being scraped successfully"
+          description: "No successful scrape of agentic-operations in agentic-operations-dev for 2 minutes. Check the pod and /q/metrics."
+      - alert: AiopsModelUnavailable
+        expr: sum(increase(aiops_analyses_total{namespace="agentic-operations-dev",status="MODEL_UNAVAILABLE"}[15m])) > 0 and sum(increase(aiops_analyses_total{namespace="agentic-operations-dev",status=~"COMPLETED|DEGRADED"}[15m])) == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: agentic-operations
+        annotations:
+          summary: "Analyses end MODEL_UNAVAILABLE and none completed in 15 minutes"
+          description: "The in-cluster vLLM (vllm-test in namespace vllm, box1-docs#26) looks down or too slow. Order flow is unaffected."
+      - alert: AiopsWindowSeekFailed
+        expr: sum(increase(aiops_window_seek_failures_total{namespace="agentic-operations-dev"}[30m])) > 0
+        labels:
+          severity: info
+          service: agentic-operations
+        annotations:
+          summary: "The Kafka evidence window could not seek to its start"
+          description: "The window fills from now instead of the last hours. Check Kafka reachability; see docs/index.md in agentic-operations."
+      - alert: AiopsKafkaRecordsSkipped
+        expr: sum(increase(aiops_kafka_records_total{namespace="agentic-operations-dev",outcome="skipped"}[15m])) > 10
+        labels:
+          severity: info
+          service: agentic-operations
+        annotations:
+          summary: "The evidence window is skipping malformed Kafka records"
+          description: "More than 10 records were skipped in 15 minutes (see the reason label). Nothing is written to any DLQ by this service."

@@ -12,6 +12,8 @@ resources:
   - service.yaml
   - route.yaml
   - onboarding.yaml
+  - servicemonitor.yaml
+  - prometheusrule.yaml
 
 configMapGenerator:
   - name: agentic-operations-config
