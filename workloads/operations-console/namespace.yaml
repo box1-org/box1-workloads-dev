@@ -5,3 +5,7 @@ metadata:
   labels:
     argocd.argoproj.io/managed-by: openshift-gitops
     pod-security.kubernetes.io/enforce: restricted
+    # Istio ambient L4 (box1-docs#23): seen by the mesh and Kiali, traffic
+    # captured by ztunnel. Remove both labels to leave the mesh.
+    istio-discovery: enabled
+    istio.io/dataplane-mode: ambient
