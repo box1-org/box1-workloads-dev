@@ -5,9 +5,9 @@ metadata:
   namespace: agentic-operations-dev
   annotations:
     box1.org/source-revision: 61bcb8c38e4b5e6777c95d77b7398ea299b1ca5e
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-agentic-operations-61bcb8c3
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
