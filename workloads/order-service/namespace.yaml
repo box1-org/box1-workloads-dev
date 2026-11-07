@@ -9,3 +9,6 @@ metadata:
     # ztunnel. Remove both labels to leave the mesh.
     istio-discovery: enabled
     istio.io/dataplane-mode: ambient
+    # L7 (box1-docs#23): this namespace's services are reached through its
+    # waypoint (waypoint.yaml). Remove to return to L4 only.
+    istio.io/use-waypoint: waypoint
