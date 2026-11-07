@@ -76,6 +76,12 @@ spec:
             # ASSET_READ_CLIENTS. Set "false" to go back to the telemetry-console link only.
             - name: CONSOLE_ASSET_FORWARD_TOKEN
               value: "true"
+            # The Assistant (box1-docs#101): the person's own token goes to agentic-operations only; its client
+            # carries audience agentic-operations and only the aiops-viewer/aiops-analyst roles (box1-gitops).
+            - name: AGENTIC_OPERATIONS_URL
+              value: http://agentic-operations.agentic-operations-dev.svc:8080
+            - name: CONSOLE_AIOPS_FORWARD_TOKEN
+              value: "true"
 
           resources:
             requests:
