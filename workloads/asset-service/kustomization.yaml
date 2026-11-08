@@ -33,4 +33,4 @@ configMapGenerator:
 images:
   - name: asset-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/asset-service
-    digest: sha256:6cf93f199f425907ec20a9235167f3d694406d29f5756207c6324dd32f507940
+    digest: sha256:8025f497b2c48341c58eb5eae7ef195bbb90584745706f7c6aaf623cf9abe281
