@@ -37,7 +37,7 @@ configMapGenerator:
 images:
   - name: order-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/order-service
-    digest: sha256:1f4db649da0cb87e1cce4f3990117e5a606b1dcc3ab4934cf464cf983768524d
+    digest: sha256:f2a44e65b4eafb5491196f6b3fc50d004f8cf6feca49641c97e2b70c3230a539
 
 # JVM debugging (box1-docs#114): JDWP on 127.0.0.1:5005, attach with `box1-debug dev order-service`.
 # Remove this block to turn it off again.
