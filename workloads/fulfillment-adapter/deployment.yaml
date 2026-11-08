@@ -38,6 +38,11 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+            # Hawtio Online discovers pods by this port name and calls Jolokia over
+            # HTTPS with a service-CA-signed client cert (CN hawtio-online.hawtio.svc).
+            - name: jolokia
+              containerPort: 8778
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: fulfillment-adapter-config
@@ -64,6 +69,10 @@ spec:
             # A heap OOM could otherwise leave a live pod with a dead consumer.
             - name: JDK_JAVA_OPTIONS
               value: "-XX:+ExitOnOutOfMemoryError"
+            # Jolokia trusts client certs signed by the service CA. The token is not
+            # automounted, so the CA bundle is mounted on its own (service-ca volume).
+            - name: QUARKUS_CAMEL_JOLOKIA_KUBERNETES_SERVICE_CA_CERT
+              value: /var/run/secrets/box1/service-ca/service-ca.crt
           resources:
             requests:
               cpu: 100m
@@ -104,6 +113,9 @@ spec:
             - name: sftp
               mountPath: /var/run/secrets/box1/sftp
               readOnly: true
+            - name: service-ca
+              mountPath: /var/run/secrets/box1/service-ca
+              readOnly: true
       volumes:
         - name: tmp
           emptyDir:
@@ -114,3 +126,11 @@ spec:
             secretName: fulfillment-adapter-sftp
             optional: true
             defaultMode: 0440
+        # Service CA bundle, injected by OpenShift into every namespace. Only the CA
+        # certificate is mounted; no service account token.
+        - name: service-ca
+          configMap:
+            name: openshift-service-ca.crt
+            items:
+              - key: service-ca.crt
+                path: service-ca.crt
