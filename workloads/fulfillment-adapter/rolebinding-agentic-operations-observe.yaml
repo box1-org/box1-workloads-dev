@@ -1,0 +1,31 @@
+# agentic-operations reads this namespace's pods, logs, metrics and alerts as evidence (box1-docs#111, user
+# decision 2026-11-08), with its own ServiceAccount. box1-observability-reader (box1-gitops logging/rbac-readers.yaml)
+# is pods get/list and pods/log get; monitoring-rules-view lets the Alertmanager tenancy port show this namespace's
+# alerts. No secrets, configmaps, exec or writes. Remove both bindings to withdraw the access.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: agentic-operations-observe
+  namespace: fulfillment-adapter-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: box1-observability-reader
+subjects:
+  - kind: ServiceAccount
+    name: agentic-operations
+    namespace: agentic-operations-dev
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: agentic-operations-monitoring-rules-view
+  namespace: fulfillment-adapter-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: monitoring-rules-view
+subjects:
+  - kind: ServiceAccount
+    name: agentic-operations
+    namespace: agentic-operations-dev

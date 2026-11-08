@@ -69,6 +69,20 @@ spec:
               value: http://inventory-service.inventory-service-dev.svc:8080
             - name: FULFILLMENT_ADAPTER_URL
               value: http://fulfillment-adapter.fulfillment-adapter-dev.svc:8080
+            # Platform evidence (box1-docs#111): read with the pod's own projected ServiceAccount token over TLS
+            # trusting only the service CA. Namespace scope comes from RoleBindings in each box1 namespace.
+            - name: AIOPS_PLATFORM_TOKEN_PATH
+              value: /var/run/secrets/box1/platform/token
+            - name: AIOPS_PLATFORM_CA_PATH
+              value: /var/run/secrets/box1/service-ca/service-ca.crt
+            - name: AIOPS_TEMPO_URL
+              value: https://tempo-box1-gateway.box1-observability.svc:8080/api/traces/v1/dev/tempo
+            - name: AIOPS_LOKI_URL
+              value: https://logging-loki-gateway-http.openshift-logging.svc:8080/api/logs/v1/application
+            - name: AIOPS_THANOS_TENANCY_URL
+              value: https://thanos-querier.openshift-monitoring.svc:9092
+            - name: AIOPS_ALERTMANAGER_TENANCY_URL
+              value: https://alertmanager-main.openshift-monitoring.svc:9095
 
           resources:
             requests:
@@ -106,7 +120,25 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: platform-token
+              mountPath: /var/run/secrets/box1/platform
+              readOnly: true
+            - name: service-ca
+              mountPath: /var/run/secrets/box1/service-ca
+              readOnly: true
       volumes:
         - name: tmp
           emptyDir:
             sizeLimit: 64Mi
+        # The ServiceAccount token for platform reads only (box1-docs#111). automountServiceAccountToken stays false:
+        # this projected token is short-lived, rotated by the kubelet, and mounted at a path only the platform client
+        # reads. It carries no Kubernetes API permissions beyond the read-only bindings named in #111.
+        - name: platform-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: token
+                  expirationSeconds: 3600
+        - name: service-ca
+          configMap:
+            name: agentic-operations-service-ca
