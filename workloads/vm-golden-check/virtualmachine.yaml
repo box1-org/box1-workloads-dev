@@ -9,9 +9,9 @@ metadata:
   name: "vm-golden-check"
   namespace: "vm-golden-check-dev"
   annotations:
-    box1.org/os-image-digest: sha256:351d074d200c1eafea7e2d6b58276f32ef89bdf7265712809d09865f27c3d6b6
-    box1.org/source-revision: 37dcf152f756b1086e949a4b5df011c437e7f224
-    box1.org/build-pipelinerun: box1-ci/vm-golden-check-release-6xk99
+    box1.org/os-image-digest: sha256:3a0d52cef40fb77e58b56be7df0b99abe4a2ee9659bde0bf622a9f9f328020be
+    box1.org/source-revision: 21a898e7fac7ff050e377b4c288ad0ea335f1c00
+    box1.org/build-pipelinerun: box1-ci/vm-golden-check-release-96cls
 spec:
   runStrategy: Always
   template:
