@@ -37,4 +37,4 @@ configMapGenerator:
 images:
   - name: scenario-controller
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/scenario-controller
-    digest: sha256:0607f1f89cf7f2d034eaa06d57b4a14fe368e9768c85b9a64b519ce9fd16daca
+    digest: sha256:1487655a0fdfac6ba3c73fd62feee79cf5bf44234825f040d4a48f85d59fb544
