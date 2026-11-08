@@ -1,0 +1,41 @@
+# Opt-in JVM debugging for one dev service (box1-org/box1-docs#114).
+#
+# Enable for a service by adding to workloads/<service>/kustomization.yaml:
+#
+#   components:
+#     - ../../components/jvm-debug
+#
+# and remove it again when you are done; it is off everywhere by default.
+#
+# The JVM listens for JDWP on 127.0.0.1:5005 only, so other pods (and the mesh)
+# cannot reach it. Attach from a Dev Spaces workspace with `box1-debug dev <service>`,
+# which needs pods/portforward in <service>-dev. suspend=n: the service starts and
+# serves normally until a debugger attaches. A paused breakpoint stops request
+# handling and can fail probes, so expect restarts during long pauses.
+#
+# _JAVA_OPTIONS is used because the JVM appends it after JAVA_TOOL_OPTIONS and
+# JDK_JAVA_OPTIONS, which services already set; nothing existing is replaced.
+# Applies only to Deployments carrying box1.org/source-revision (the service
+# itself, not its PostgreSQL), container "application".
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+patches:
+  - target:
+      kind: Deployment
+      annotationSelector: box1.org/source-revision
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: ignored
+      spec:
+        template:
+          metadata:
+            annotations:
+              box1.org/jvm-debug: enabled
+          spec:
+            containers:
+              - name: application
+                env:
+                  - name: _JAVA_OPTIONS
+                    value: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:5005
