@@ -13,6 +13,7 @@ resources:
   - service.yaml
   - route.yaml
   - onboarding.yaml
+  - rolebinding-agentic-operations-observe.yaml
 
   - postgres.yaml
   - networkpolicy.yaml

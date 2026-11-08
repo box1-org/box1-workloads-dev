@@ -12,6 +12,8 @@ resources:
   - service.yaml
   - route.yaml
   - onboarding.yaml
+  - rolebinding-agentic-operations-observe.yaml
+  - service-ca.yaml
   - servicemonitor.yaml
   - prometheusrule.yaml
 
