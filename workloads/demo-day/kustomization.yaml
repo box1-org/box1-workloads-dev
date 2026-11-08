@@ -31,4 +31,4 @@ configMapGenerator:
 images:
   - name: demo-day
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/demo-day
-    digest: sha256:391e39ebb1b06eeaed3e579cc255112a67a8c0151d3b8833fb64288ad987a5c7
+    digest: sha256:b0d27fd91e5a3124b7a0379fe43228f2bb44f29d8c15f28b4d4c3201190402bb
