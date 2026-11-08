@@ -82,7 +82,7 @@ spec:
             - name: AIOPS_THANOS_TENANCY_URL
               value: https://thanos-querier.openshift-monitoring.svc:9092
             - name: AIOPS_ALERTMANAGER_TENANCY_URL
-              value: https://alertmanager-main.openshift-monitoring.svc:9095
+              value: https://alertmanager-main.openshift-monitoring.svc:9092
 
           resources:
             requests:
