@@ -28,4 +28,4 @@ configMapGenerator:
 images:
   - name: agentic-operations
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/agentic-operations
-    digest: sha256:21da40d46d29f4ed36f8bcc6e6453e1ba4627708837b5b4021666b01032e4818
+    digest: sha256:0445b0a8379bfd85d810651ca61c5b5fa8931f175dd63252b78cdc9d97ab6386
