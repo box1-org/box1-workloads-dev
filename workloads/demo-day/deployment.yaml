@@ -4,8 +4,8 @@ metadata:
   name: demo-day
   namespace: demo-day-dev
   annotations:
-    box1.org/source-revision: 18dd9e9c83a8b44149ddf341ee9c6209e99ce7ca
-    box1.org/build-pipelinerun: box1-ci/onb-demo-day-18dd9e9c
+    box1.org/source-revision: 79715690b1d50ac29069feb11f226f556cb5165c
+    box1.org/build-pipelinerun: box1-ci/demo-day-release-dtt6v
 spec:
   replicas: 1
   revisionHistoryLimit: 3
