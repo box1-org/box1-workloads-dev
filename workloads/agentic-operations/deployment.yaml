@@ -4,8 +4,8 @@ metadata:
   name: agentic-operations
   namespace: agentic-operations-dev
   annotations:
-    box1.org/source-revision: b458ffed74623b1dc977697c8009c981ec58fece
-    box1.org/build-pipelinerun: box1-ci/agentic-operations-release-6vr8q
+    box1.org/source-revision: a6418ca9939154c8630c0655aeb2bc0af584f47e
+    box1.org/build-pipelinerun: box1-ci/agentic-operations-release-vtnrl
 spec:
   replicas: 1
   revisionHistoryLimit: 3
