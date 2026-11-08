@@ -33,4 +33,4 @@ configMapGenerator:
 images:
   - name: notification-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/notification-service
-    digest: sha256:68d42dfdfc7f1941065c0ec6a74d7a6339ec1212fa2d237c9939bca5905f5153
+    digest: sha256:4285fdfc0ff732a7cf37e956b082bbad3912cabd7d509d9d572493025ea82038
