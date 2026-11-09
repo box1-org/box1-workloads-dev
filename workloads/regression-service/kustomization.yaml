@@ -24,4 +24,4 @@ configMapGenerator:
 images:
   - name: regression-service
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/regression-service
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:cccf42090100344db3460b8e911971239af0ca62c8fde5a10ec4d0ff9883f7cf
