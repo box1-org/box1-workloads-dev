@@ -12,7 +12,7 @@ metadata:
 spec:
   source:
     registry:
-      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/regression-vm-disk@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/regression-vm-disk@sha256:2211a3e39685a8ff2e13106a119f9ec5395a9a67390ec931e3b3cc12489478db
       pullMethod: node
   storage:
     storageClassName: lvms-vg1
