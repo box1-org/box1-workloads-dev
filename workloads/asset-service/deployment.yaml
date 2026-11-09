@@ -4,8 +4,8 @@ metadata:
   name: asset-service
   namespace: asset-service-dev
   annotations:
-    box1.org/source-revision: 35bdeb61fcf8d1eaabfbedfb4fa1422c2894d214
-    box1.org/build-pipelinerun: box1-ci/asset-service-release-qnrr6
+    box1.org/source-revision: 95bf5c88b5118aefdd093fde1f923f7cd718fd4d
+    box1.org/build-pipelinerun: box1-ci/asset-service-release-dcq6q
 spec:
   replicas: 1
   revisionHistoryLimit: 3
