@@ -4,8 +4,8 @@ metadata:
   name: scenario-controller
   namespace: scenario-controller-dev
   annotations:
-    box1.org/source-revision: 7a936ea97c81de40d5243646aa2a6223d3e9c059
-    box1.org/build-pipelinerun: box1-ci/scenario-controller-release-n2m79
+    box1.org/source-revision: 92d66b98d4312b85c60cd3ac1fb226d0f6c03a18
+    box1.org/build-pipelinerun: box1-ci/scenario-controller-release-mlrh9
 spec:
   replicas: 1
   revisionHistoryLimit: 3
