@@ -31,4 +31,4 @@ configMapGenerator:
 images:
   - name: operations-console
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/operations-console
-    digest: sha256:ba8724c5c0ccd73d72c386de4b2a4f631162d0fdc9ec62a111fb79edde79f519
+    digest: sha256:169a9a4a94fb930c6d6e0da8dd6f18e5f8f0662feeb6bf54cae18dfc7c04036f
