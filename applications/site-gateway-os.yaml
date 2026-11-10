@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "site-gateway-os"
+  namespace: openshift-gitops
+  labels:
+    backstage.io/kubernetes-id: site-gateway-os
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/box1-org/box1-workloads-dev.git
+    targetRevision: main
+    path: workloads/site-gateway-os
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "site-gateway-os-dev"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true

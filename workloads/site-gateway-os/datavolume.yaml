@@ -1,0 +1,23 @@
+# Root disk, imported once from the pipeline-built containerDisk. Not listed in
+# kustomization.yaml until the first promotion sets the digest: DataVolume specs are
+# immutable, so a placeholder source must never be created.
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: "site-gateway-os-root"
+  namespace: "site-gateway-os-dev"
+  annotations:
+    cdi.kubevirt.io/storage.bind.immediate.requested: "false"
+spec:
+  source:
+    registry:
+      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/site-gateway-os-disk@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      pullMethod: node
+  storage:
+    storageClassName: lvms-vg1
+    volumeMode: Block
+    accessModes: [ReadWriteOnce]
+    resources:
+      requests:
+        storage: 20Gi
