@@ -11,5 +11,6 @@ resources:
   - admin-access.yaml
   - site.yaml
   - virtualmachine.yaml
+  - datavolume.yaml
   - deploy-access.yaml
   - onboarding.yaml
