@@ -26,4 +26,4 @@ configMapGenerator:
 images:
   - name: peggy-app
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/peggy-app
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:62b083cc16dbed239e8bc78e852a09a6620758fd3b6b1df2354a717cd31531b4

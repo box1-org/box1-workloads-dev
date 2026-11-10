@@ -5,9 +5,9 @@ metadata:
   namespace: peggy-app-dev
   annotations:
     box1.org/source-revision: cf9f25f0bf072e61e3c636bb5835917f91f75dd6
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-peggy-app-cf9f25f0
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
