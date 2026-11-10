@@ -1,0 +1,16 @@
+# Non-secret site identity (box1-docs#140). The cloud-init assembly script in box1-docs
+# (scripts/vm-cloud-init/assemble_cloud_init_secret.py) combines it with the site's
+# Keycloak client secret into the Secret site-east-cloud-init, outside Git.
+# Only these keys are allowed; never put a credential here.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "site-east-site"
+  namespace: "site-east-dev"
+  labels:
+    box1.org/instance: "site-east"
+data:
+  siteId: "site_spacedock"
+  keycloakClientId: "site-east"
+  keycloakTokenUrl: "https://keycloak.apps.ocp.box1.org/auth/realms/box1/protocol/openid-connect/token"
