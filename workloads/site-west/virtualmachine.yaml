@@ -14,11 +14,11 @@ metadata:
   namespace: "site-west-dev"
   annotations:
     box1.org/source-image: site-gateway-os
-    box1.org/os-image-digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    box1.org/os-image-digest: sha256:82b0badb9fa409086a16589a249c0467531d9c59d0d25ed598a71760d8e29992
     box1.org/source-revision: b1fd2a7d6c105f046b9d21116ea3dee470df67ed
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/site-gateway-os-release-smtx9
 spec:
-  runStrategy: Halted
+  runStrategy: Always
   template:
     metadata:
       labels:
