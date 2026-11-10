@@ -9,11 +9,11 @@ metadata:
   name: "site-gateway-os"
   namespace: "site-gateway-os-dev"
   annotations:
-    box1.org/os-image-digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    box1.org/os-image-digest: sha256:57914480a49bca4863b02b876a9ce9f01df481e3ad74f5ca794cf3a6df637151
     box1.org/source-revision: bc1892c8b5a03043aff60410b45fc04338d6a356
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-site-gateway-os-bc1892c8
 spec:
-  runStrategy: Halted
+  runStrategy: Always
   template:
     metadata:
       labels:
