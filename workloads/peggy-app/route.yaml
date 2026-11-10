@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: peggy-app
+  namespace: peggy-app-dev
+spec:
+  host: peggy-app-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: peggy-app
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
