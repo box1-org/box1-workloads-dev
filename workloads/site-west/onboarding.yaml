@@ -1,0 +1,117 @@
+---
+# The instance namespace imports the source disk (DataVolume, pullMethod: node) and,
+# in the guest, reaches box1-ci with the updater token. No PaC Repository: an instance
+# has no source repository.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "site-west-image-puller"
+  namespace: box1-ci
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:image-puller
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: "system:serviceaccounts:site-west-dev"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "site-west-release-observer"
+  namespace: "site-west-dev"
+rules:
+- apiGroups:
+  - kubevirt.io
+  resources:
+  - virtualmachines
+  - virtualmachineinstances
+  resourceNames:
+  - "site-west"
+  verbs:
+  - get
+- apiGroups:
+  - cdi.kubevirt.io
+  resources:
+  - datavolumes
+  resourceNames:
+  - "site-west-root"
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "site-west-release-observer"
+  namespace: "site-west-dev"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "site-west-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "site-west-release-observer"
+  namespace: openshift-gitops
+rules:
+- apiGroups:
+  - argoproj.io
+  resources:
+  - applications
+  resourceNames:
+  - "site-west"
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "site-west-release-observer"
+  namespace: openshift-gitops
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "site-west-release-observer"
+subjects:
+- kind: ServiceAccount
+  name: ci-observe
+  namespace: box1-ci
+---
+# Platform readiness (box1-docs#138): the onboarding plugin checks that the cloud-init
+# Secret exists before it promotes (starts) the VM. Kubernetes cannot grant
+# metadata-only access, so this allows `get` on that one Secret name; the plugin
+# requests PartialObjectMetadata only, so the Secret's data is never transferred.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: "site-west-cloud-init-observer"
+  namespace: "site-west-dev"
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  resourceNames:
+  - "site-west-cloud-init"
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "site-west-cloud-init-observer"
+  namespace: "site-west-dev"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: "site-west-cloud-init-observer"
+subjects:
+- kind: ServiceAccount
+  name: developer-hub-onboarding
+  namespace: rhdh
