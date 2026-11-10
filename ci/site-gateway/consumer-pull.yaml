@@ -33,3 +33,7 @@ subjects:
 - kind: ServiceAccount
   name: ci-bootc-check
   namespace: box1-ci
+# PR builds pull as this account; ci-bootc-check has no token (box1-org/box1-gitops#141).
+- kind: ServiceAccount
+  name: ci-bundle-pull
+  namespace: box1-ci
