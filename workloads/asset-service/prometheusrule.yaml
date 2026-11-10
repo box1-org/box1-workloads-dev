@@ -1,4 +1,4 @@
-# Availability alert (box1-docs#22).
+# Availability alert (box1-docs#22) and the edge stale-site alert (box1-docs#128).
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -20,3 +20,27 @@ spec:
         annotations:
           summary: "asset-service is not being scraped successfully"
           description: "No successful scrape of asset-service in asset-service-dev for 2 minutes. Check the pod and /q/metrics."
+      # A site that sends neither heartbeats nor readings (box1-docs#128). The per-site gauges come from asset-service
+      # (/q/metrics, one series per site that has reported a status): heartbeat age is measured from asset-service's
+      # receive time, last-reading age from the newest stored reading's measuredAt (+Inf when it has none). Either one
+      # resuming clears the alert. Both are NaN while asset-service cannot read its database, so the alert does not
+      # fire then; Box1ServiceDown covers asset-service itself.
+      - alert: Box1SiteStale
+        expr: |
+          max by (namespace, siteId) (asset_site_heartbeat_age_seconds{job="asset-service"}) > 120
+          and on (namespace, siteId)
+          max by (namespace, siteId) (asset_site_last_reading_age_seconds{job="asset-service"}) > 120
+        for: 1m
+        labels:
+          severity: warning
+          service: asset-service
+        annotations:
+          summary: "Edge site {{ $labels.siteId }} has sent no heartbeat and no reading for over 2 minutes"
+          description: >-
+            asset-service has received neither a status heartbeat nor a reading from {{ $labels.siteId }} for
+            more than 120 s, sustained for 1 minute. Effective detection window: the 120 s threshold, plus up to
+            30 s scrape interval, plus up to 30 s rule evaluation, plus the 1 m for: it fires 180 to 240 s after
+            the later of the site's last heartbeat and last reading (sites report about every 15 s). It resolves
+            within about 70 s of the next heartbeat or reading (10 s gauge refresh, 30 s scrape, 30 s evaluation).
+            Check the site VM's network and gateway, and GET /api/v1/sites/{{ $labels.siteId }} for its last
+            reported state.
