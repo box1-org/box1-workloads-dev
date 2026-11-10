@@ -83,6 +83,26 @@ spec:
               value: https://thanos-querier.openshift-monitoring.svc:9092
             - name: AIOPS_ALERTMANAGER_TENANCY_URL
               value: https://alertmanager-main.openshift-monitoring.svc:9092
+            # AI traces to the box1 Langfuse (box1-gitops platform/langfuse, project box1-default). In-cluster callers
+            # use the public route: Langfuse's NetworkPolicies admit only the router. The key pair is provisioned by the
+            # user into Secret agentic-operations-langfuse; until it exists nothing is sent to Langfuse. With a key
+            # set, prompts, evidence, completions and answers are recorded on the AI spans (AIOPS_TRACE_CONTENT).
+            - name: LANGFUSE_BASE_URL
+              value: https://langfuse.apps.ocp.box1.org
+            - name: LANGFUSE_TRACING_ENVIRONMENT
+              value: dev
+            - name: LANGFUSE_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agentic-operations-langfuse
+                  key: LANGFUSE_PUBLIC_KEY
+                  optional: true
+            - name: LANGFUSE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agentic-operations-langfuse
+                  key: LANGFUSE_SECRET_KEY
+                  optional: true
 
           resources:
             requests:
