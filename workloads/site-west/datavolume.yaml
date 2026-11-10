@@ -13,7 +13,7 @@ metadata:
 spec:
   source:
     registry:
-      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/site-gateway-os-disk@sha256:0000000000000000000000000000000000000000000000000000000000000000
+      url: docker://image-registry.openshift-image-registry.svc:5000/box1-ci/site-gateway-os-disk@sha256:cdb9546ae00b94779cfde9a69ccd20655577f07364db5a86bcb7d1b37c7cc3d1
       pullMethod: node
   storage:
     storageClassName: lvms-vg1
