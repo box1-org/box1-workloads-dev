@@ -14,9 +14,9 @@ metadata:
   namespace: "site-west-dev"
   annotations:
     box1.org/source-image: site-gateway-os
-    box1.org/os-image-digest: sha256:89e044b3f0c112697e2c233380dacd44746859edf7b233c15881251ff8d31c2b
-    box1.org/source-revision: 9fe5ba418d7c4d20d7b1ffca4c45d546f94d6bb1
-    box1.org/build-pipelinerun: box1-ci/site-gateway-os-release-65p6q
+    box1.org/os-image-digest: sha256:651d4a5fabaaa0f93da8787cf8ce934f9dbbf1ba445d38e13363664a7d0a520b
+    box1.org/source-revision: dc964efa2209014d1e89c426b8aec36af4ef7db1
+    box1.org/build-pipelinerun: box1-ci/site-gateway-os-release-28fbt
 spec:
   runStrategy: Always
   template:
