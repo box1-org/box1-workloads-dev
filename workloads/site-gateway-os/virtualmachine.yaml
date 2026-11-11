@@ -9,9 +9,9 @@ metadata:
   name: "site-gateway-os"
   namespace: "site-gateway-os-dev"
   annotations:
-    box1.org/os-image-digest: sha256:0b1f8d0f313aa90c5cd202ee1377353b2cc01fe514dc5cb3e4246996e3cd9a22
-    box1.org/source-revision: e50b3d709a56a2e33b0e0b7b4d88e18b7bb3098a
-    box1.org/build-pipelinerun: box1-ci/site-gateway-os-release-8jdcf
+    box1.org/os-image-digest: sha256:651d4a5fabaaa0f93da8787cf8ce934f9dbbf1ba445d38e13363664a7d0a520b
+    box1.org/source-revision: dc964efa2209014d1e89c426b8aec36af4ef7db1
+    box1.org/build-pipelinerun: box1-ci/site-gateway-os-release-28fbt
 spec:
   runStrategy: Always
   template:
