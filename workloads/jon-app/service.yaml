@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jon-app
+  namespace: jon-app-dev
+spec:
+  selector:
+    app.kubernetes.io/name: jon-app
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
