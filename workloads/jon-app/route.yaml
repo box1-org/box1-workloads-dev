@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: jon-app
+  namespace: jon-app-dev
+spec:
+  host: jon-app-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: jon-app
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
