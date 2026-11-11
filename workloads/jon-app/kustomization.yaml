@@ -31,4 +31,4 @@ configMapGenerator:
 images:
   - name: jon-app
     newName: image-registry.openshift-image-registry.svc:5000/box1-ci/jon-app
-    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+    digest: sha256:e2cda78cab46a35e8a966af0c881d9930ac085b6c1bcf47773e601d919911a00
