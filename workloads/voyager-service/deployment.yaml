@@ -5,9 +5,9 @@ metadata:
   namespace: voyager-service-dev
   annotations:
     box1.org/source-revision: 6b348083d0494187c13d1f85679d55c3d39a64aa
-    box1.org/build-pipelinerun: awaiting-first-release
+    box1.org/build-pipelinerun: box1-ci/onb-voyager-service-6b348083
 spec:
-  replicas: 0
+  replicas: 1
   revisionHistoryLimit: 3
   progressDeadlineSeconds: 300
   strategy:
