@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: voyager-service
+  namespace: voyager-service-dev
+spec:
+  host: voyager-service-dev.apps.ocp.box1.org
+  to:
+    kind: Service
+    name: voyager-service
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
